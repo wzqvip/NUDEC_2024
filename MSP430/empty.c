@@ -184,7 +184,7 @@ void APP_Show(void)
 	}
     else
 	{		
-		printf("{A%%d:%d:%d:%d}$",CCD_Zhongzhi,encoderA_cnt,encoderB_cnt);//打印到APP上面 显示波形
+		printf("{A%%d:%d:%d:%d:%d:%d}$",CCD_Zhongzhi,encoderA_cnt,encoderB_cnt,Pitch,Roll);//打印到APP上面 显示波形
 	}
 }
 

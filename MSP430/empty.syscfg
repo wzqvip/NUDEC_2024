@@ -83,23 +83,23 @@ GPIO3.associatedPins[1].interruptPriority = "0";
 GPIO4.$name                   = "GPIO_GRP_0";
 GPIO4.associatedPins[0].$name = "PIN_1";
 
-GPIO5.$name                         = "AIN1";
 GPIO5.port                          = "PORTA";
+GPIO5.$name                         = "AIN2";
 GPIO5.associatedPins[0].$name       = "PIN_12";
 GPIO5.associatedPins[0].assignedPin = "12";
 
-GPIO6.$name                         = "AIN2";
 GPIO6.port                          = "PORTA";
+GPIO6.$name                         = "AIN1";
 GPIO6.associatedPins[0].$name       = "PIN_13";
 GPIO6.associatedPins[0].assignedPin = "13";
 
-GPIO7.$name                         = "BIN1";
 GPIO7.port                          = "PORTB";
+GPIO7.$name                         = "BIN2";
 GPIO7.associatedPins[0].assignedPin = "16";
 GPIO7.associatedPins[0].$name       = "Pin_Bin1";
 
-GPIO8.$name                         = "BIN2";
 GPIO8.port                          = "PORTB";
+GPIO8.$name                         = "BIN1";
 GPIO8.associatedPins[0].assignedPin = "0";
 GPIO8.associatedPins[0].$name       = "Pin_Bin2";
 
