@@ -155,9 +155,9 @@ extern "C" {
 /* Port definition for Pin Group LED1 */
 #define LED1_PORT                                                        (GPIOA)
 
-/* Defines for PIN_0: GPIOA.0 with pinCMx 1 on package pin 33 */
-#define LED1_PIN_0_PIN                                           (DL_GPIO_PIN_0)
-#define LED1_PIN_0_IOMUX                                          (IOMUX_PINCM1)
+/* Defines for PIN_26: GPIOA.26 with pinCMx 59 on package pin 30 */
+#define LED1_PIN_26_PIN                                         (DL_GPIO_PIN_26)
+#define LED1_PIN_26_IOMUX                                        (IOMUX_PINCM59)
 /* Port definition for Pin Group KEY */
 #define KEY_PORT                                                         (GPIOB)
 
@@ -232,6 +232,15 @@ extern "C" {
 #define ENCODERB_E2B_IIDX                                   (DL_GPIO_IIDX_DIO22)
 #define ENCODERB_E2B_PIN                                        (DL_GPIO_PIN_22)
 #define ENCODERB_E2B_IOMUX                                       (IOMUX_PINCM47)
+/* Port definition for Pin Group I2C */
+#define I2C_PORT                                                         (GPIOA)
+
+/* Defines for SCL: GPIOA.0 with pinCMx 1 on package pin 33 */
+#define I2C_SCL_PIN                                              (DL_GPIO_PIN_0)
+#define I2C_SCL_IOMUX                                             (IOMUX_PINCM1)
+/* Defines for SDA: GPIOA.1 with pinCMx 2 on package pin 34 */
+#define I2C_SDA_PIN                                              (DL_GPIO_PIN_1)
+#define I2C_SDA_IOMUX                                             (IOMUX_PINCM2)
 
 
 
