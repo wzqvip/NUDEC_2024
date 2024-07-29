@@ -1,3 +1,0 @@
-LED: IO0 --- IO26 和IIC冲突了换掉
-
-添加了IIC IO0-SCL IO1-SDA. 
