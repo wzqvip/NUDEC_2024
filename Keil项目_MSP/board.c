@@ -1,5 +1,6 @@
 #include "board.h"
 #include "stdio.h"
+#include "string.h"
 
 #define RE_0_BUFF_LEN_MAX	128
 extern float Velocity,Turn;
