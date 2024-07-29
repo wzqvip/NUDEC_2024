@@ -152,18 +152,6 @@ extern "C" {
 
 
 
-/* Port definition for Pin Group LED1 */
-#define LED1_PORT                                                        (GPIOA)
-
-/* Defines for PIN_26: GPIOA.26 with pinCMx 59 on package pin 30 */
-#define LED1_PIN_26_PIN                                         (DL_GPIO_PIN_26)
-#define LED1_PIN_26_IOMUX                                        (IOMUX_PINCM59)
-/* Port definition for Pin Group KEY */
-#define KEY_PORT                                                         (GPIOB)
-
-/* Defines for PIN_21: GPIOB.21 with pinCMx 49 on package pin 20 */
-#define KEY_PIN_21_PIN                                          (DL_GPIO_PIN_21)
-#define KEY_PIN_21_IOMUX                                         (IOMUX_PINCM49)
 /* Port definition for Pin Group GPIO_GRP_0 */
 #define GPIO_GRP_0_PORT                                                  (GPIOB)
 
@@ -206,6 +194,27 @@ extern "C" {
 /* Defines for PIN_25: GPIOA.25 with pinCMx 55 on package pin 26 */
 #define GPIO_SI_PIN_25_PIN                                      (DL_GPIO_PIN_25)
 #define GPIO_SI_PIN_25_IOMUX                                     (IOMUX_PINCM55)
+/* Port definition for Pin Group LEDS */
+#define LEDS_PORT                                                        (GPIOB)
+
+/* Defines for LED_R: GPIOB.26 with pinCMx 57 on package pin 28 */
+#define LEDS_LED_R_PIN                                          (DL_GPIO_PIN_26)
+#define LEDS_LED_R_IOMUX                                         (IOMUX_PINCM57)
+/* Defines for LED_G: GPIOB.27 with pinCMx 58 on package pin 29 */
+#define LEDS_LED_G_PIN                                          (DL_GPIO_PIN_27)
+#define LEDS_LED_G_IOMUX                                         (IOMUX_PINCM58)
+/* Defines for LED_B: GPIOB.22 with pinCMx 50 on package pin 21 */
+#define LEDS_LED_B_PIN                                          (DL_GPIO_PIN_22)
+#define LEDS_LED_B_IOMUX                                         (IOMUX_PINCM50)
+/* Port definition for Pin Group KEYS */
+#define KEYS_PORT                                                        (GPIOB)
+
+/* Defines for KEY_R: GPIOB.21 with pinCMx 49 on package pin 20 */
+#define KEYS_KEY_R_PIN                                          (DL_GPIO_PIN_21)
+#define KEYS_KEY_R_IOMUX                                         (IOMUX_PINCM49)
+/* Defines for KEY_L: GPIOB.18 with pinCMx 44 on package pin 15 */
+#define KEYS_KEY_L_PIN                                          (DL_GPIO_PIN_18)
+#define KEYS_KEY_L_IOMUX                                         (IOMUX_PINCM44)
 /* Port definition for Pin Group ENCODERA */
 #define ENCODERA_PORT                                                    (GPIOA)
 

@@ -19,17 +19,17 @@ All rights reserved
 ***********************************************/
 void LED_ON(void)
 {
-	DL_GPIO_clearPins(LED1_PORT,LED1_PIN_26_PIN);
+	DL_GPIO_clearPins(LEDS_PORT,LEDS_LED_R_PIN);
 }
 
 void LED_OFF(void)
 {
-	DL_GPIO_setPins(LED1_PORT,LED1_PIN_26_PIN);
+	DL_GPIO_setPins(LEDS_PORT,LEDS_LED_R_PIN);
 }
 
 void LED_Toggle(void)
 {
-	DL_GPIO_togglePins(LED1_PORT,LED1_PIN_26_PIN);
+	DL_GPIO_togglePins(LEDS_PORT,LEDS_LED_R_PIN);
 }
 
 void LED_Flash(uint16_t time)

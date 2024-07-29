@@ -127,7 +127,7 @@ void TIMER_0_INST_IRQHandler(void)
 			    encoderB_cnt = Get_Encoder_countB;
 				Get_Encoder_countA = 0;
 			    Get_Encoder_countB = 0;
-			    LED_Flash(100);//LED1闪烁
+			    LED_Flash(100);//LEDS闪烁
 			    Kinematic_Analysis(Velocity,Turn);  //小车运动学分析   
 				PWMA = Velocity_A(-Target_A,encoderA_cnt);
 			    PWMB = Velocity_B(-Target_B,encoderB_cnt);
