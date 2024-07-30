@@ -2,6 +2,9 @@
 #include "stdio.h"
 #include "string.h"
 
+
+extern UART_Regs current_uart_port;
+
 #define RE_0_BUFF_LEN_MAX	128
 extern float Velocity,Turn;
 volatile uint8_t  recv0_buff[RE_0_BUFF_LEN_MAX] = {0};
@@ -117,13 +120,14 @@ void _sys_exit(int x)
 //printf函数重定义
 int fputc(int ch, FILE *stream)
 {
-	//当串口0忙的时候等待，不忙的时候再发送传进来的字符
-	while( DL_UART_isBusy(UART_0_INST) == true );
-	
-	DL_UART_Main_transmitData(UART_0_INST, ch);
-	
-	return ch;
+    // 当串口忙的时候等待，不忙的时候再发送传进来的字符
+    while(DL_UART_isBusy(UART_0_INST) == true);
+    
+    DL_UART_Main_transmitData(UART_0_INST, ch);
+    
+    return ch;
 }
+
 
 
 //串口的中断服务函数

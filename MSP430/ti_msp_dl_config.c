@@ -129,13 +129,13 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initPeripheralInputFunction(
         GPIO_UART_1_IOMUX_RX, GPIO_UART_1_IOMUX_RX_FUNC);
 
-    DL_GPIO_initDigitalOutput(AIN2_PIN_12_IOMUX);
+    DL_GPIO_initDigitalOutput(AIN1_PIN_12_IOMUX);
 
-    DL_GPIO_initDigitalOutput(AIN1_PIN_13_IOMUX);
+    DL_GPIO_initDigitalOutput(AIN2_PIN_13_IOMUX);
 
-    DL_GPIO_initDigitalOutput(BIN2_Pin_Bin1_IOMUX);
+    DL_GPIO_initDigitalOutput(BIN1_Pin_Bin1_IOMUX);
 
-    DL_GPIO_initDigitalOutput(BIN1_Pin_Bin2_IOMUX);
+    DL_GPIO_initDigitalOutput(BIN2_Pin_Bin2_IOMUX);
 
     DL_GPIO_initDigitalOutput(GPIO_CLK_PIN_23_IOMUX);
 
@@ -165,13 +165,13 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(I2C_SDA_IOMUX);
 
-    DL_GPIO_clearPins(GPIOA, AIN2_PIN_12_PIN |
-		AIN1_PIN_13_PIN |
+    DL_GPIO_clearPins(GPIOA, AIN1_PIN_12_PIN |
+		AIN2_PIN_13_PIN |
 		GPIO_SI_PIN_25_PIN);
     DL_GPIO_setPins(GPIOA, I2C_SCL_PIN |
 		I2C_SDA_PIN);
-    DL_GPIO_enableOutput(GPIOA, AIN2_PIN_12_PIN |
-		AIN1_PIN_13_PIN |
+    DL_GPIO_enableOutput(GPIOA, AIN1_PIN_12_PIN |
+		AIN2_PIN_13_PIN |
 		GPIO_SI_PIN_25_PIN |
 		I2C_SCL_PIN |
 		I2C_SDA_PIN);
@@ -187,14 +187,14 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		ENCODERA_E1B_PIN |
 		ENCODERB_E2A_PIN |
 		ENCODERB_E2B_PIN);
-    DL_GPIO_clearPins(GPIOB, BIN2_Pin_Bin1_PIN |
-		BIN1_Pin_Bin2_PIN |
+    DL_GPIO_clearPins(GPIOB, BIN1_Pin_Bin1_PIN |
+		BIN2_Pin_Bin2_PIN |
 		GPIO_CLK_PIN_23_PIN |
 		LEDS_LED_R_PIN |
 		LEDS_LED_G_PIN |
 		LEDS_LED_B_PIN);
-    DL_GPIO_enableOutput(GPIOB, BIN2_Pin_Bin1_PIN |
-		BIN1_Pin_Bin2_PIN |
+    DL_GPIO_enableOutput(GPIOB, BIN1_Pin_Bin1_PIN |
+		BIN2_Pin_Bin2_PIN |
 		GPIO_CLK_PIN_23_PIN |
 		LEDS_LED_R_PIN |
 		LEDS_LED_G_PIN |

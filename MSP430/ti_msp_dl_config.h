@@ -152,30 +152,30 @@ extern "C" {
 
 
 
-/* Port definition for Pin Group AIN2 */
-#define AIN2_PORT                                                        (GPIOA)
-
-/* Defines for PIN_12: GPIOA.12 with pinCMx 34 on package pin 5 */
-#define AIN2_PIN_12_PIN                                         (DL_GPIO_PIN_12)
-#define AIN2_PIN_12_IOMUX                                        (IOMUX_PINCM34)
 /* Port definition for Pin Group AIN1 */
 #define AIN1_PORT                                                        (GPIOA)
 
-/* Defines for PIN_13: GPIOA.13 with pinCMx 35 on package pin 6 */
-#define AIN1_PIN_13_PIN                                         (DL_GPIO_PIN_13)
-#define AIN1_PIN_13_IOMUX                                        (IOMUX_PINCM35)
-/* Port definition for Pin Group BIN2 */
-#define BIN2_PORT                                                        (GPIOB)
+/* Defines for PIN_12: GPIOA.12 with pinCMx 34 on package pin 5 */
+#define AIN1_PIN_12_PIN                                         (DL_GPIO_PIN_12)
+#define AIN1_PIN_12_IOMUX                                        (IOMUX_PINCM34)
+/* Port definition for Pin Group AIN2 */
+#define AIN2_PORT                                                        (GPIOA)
 
-/* Defines for Pin_Bin1: GPIOB.16 with pinCMx 33 on package pin 4 */
-#define BIN2_Pin_Bin1_PIN                                       (DL_GPIO_PIN_16)
-#define BIN2_Pin_Bin1_IOMUX                                      (IOMUX_PINCM33)
+/* Defines for PIN_13: GPIOA.13 with pinCMx 35 on package pin 6 */
+#define AIN2_PIN_13_PIN                                         (DL_GPIO_PIN_13)
+#define AIN2_PIN_13_IOMUX                                        (IOMUX_PINCM35)
 /* Port definition for Pin Group BIN1 */
 #define BIN1_PORT                                                        (GPIOB)
 
+/* Defines for Pin_Bin1: GPIOB.16 with pinCMx 33 on package pin 4 */
+#define BIN1_Pin_Bin1_PIN                                       (DL_GPIO_PIN_16)
+#define BIN1_Pin_Bin1_IOMUX                                      (IOMUX_PINCM33)
+/* Port definition for Pin Group BIN2 */
+#define BIN2_PORT                                                        (GPIOB)
+
 /* Defines for Pin_Bin2: GPIOB.0 with pinCMx 12 on package pin 47 */
-#define BIN1_Pin_Bin2_PIN                                        (DL_GPIO_PIN_0)
-#define BIN1_Pin_Bin2_IOMUX                                      (IOMUX_PINCM12)
+#define BIN2_Pin_Bin2_PIN                                        (DL_GPIO_PIN_0)
+#define BIN2_Pin_Bin2_IOMUX                                      (IOMUX_PINCM12)
 /* Port definition for Pin Group GPIO_CLK */
 #define GPIO_CLK_PORT                                                    (GPIOB)
 

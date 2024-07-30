@@ -36,6 +36,8 @@
 #include "motor.h"
 #include "CCD.h"
 
+int track_num = 0;
+
 // 6050
 void Get_Angle(uint8_t way);
 #define Pi 3.14159265
