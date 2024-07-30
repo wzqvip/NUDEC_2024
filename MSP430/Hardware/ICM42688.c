@@ -30,13 +30,15 @@ void ICM42688_init() {
 
     DFRobot_ICM42688_begin(DFRobot_ICM42688_I2C_H_ADDR);
 
-    while ((ret = DFRobot_ICM42688_setODRAndFSR(GYRO, ODR_1KHZ, FSR_0)) != 0) {
-        if (ret == -1) {
-            printf("bus data access error");
-        } else {
-            printf("Chip versions do not match:");
-        }
-        delay(1000);
+    while ((ret = DFRobot_ICM42688_setODRAndFSR(GYRO, ODR_1KHZ, FSR_0)) == false) {
+        // if (ret == 255) {
+        //     printf("bus data access error");
+        // } else {
+        //     printf("Chip versions do not match:");
+        //     printf("ICM42688 version is %d", ret);
+        // }
+        printf("ICM42688 set gyro ODR and FSR failed");
+        delay_ms(1000);
     }
     printf("ICM42688 begin success!!!");
 

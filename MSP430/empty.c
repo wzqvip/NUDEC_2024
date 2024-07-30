@@ -38,6 +38,9 @@
 
 // 6050
 void Get_Angle(uint8_t way);
+//ICM
+void Get_Angle_ICM(uint8_t way);
+
 #define Pi 3.14159265
 uint8_t Way_Angle=2;                             //获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波 
 float Angle_Balance,Gyro_Balance,Gyro_Turn; //平衡倾角 平衡陀螺仪 转向陀螺仪
@@ -113,7 +116,7 @@ int main(void)
 		CCD_Mode();//CCD巡线PID
 
 		// Get_Angle(1); // 6050
-		Get_Angle_ICM(1); // ICM42688
+		Get_Angle_ICM(2); // ICM42688
 
 		// APP_Show();
 //        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);		

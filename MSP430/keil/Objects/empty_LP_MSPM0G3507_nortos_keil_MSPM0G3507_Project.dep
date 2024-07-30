@@ -1,7 +1,7 @@
 Dependencies for Project 'empty_LP_MSPM0G3507_nortos_keil', Target 'MSPM0G3507_Project': (DO NOT MODIFY !)
 CompilerVersion: 6220000::V6.22::ARMCLANG
-F (../empty.c)(0x66A8F0C7)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/empty.o -MMD)
-I (..\board.h)(0x66A8F0C7)
+F (../empty.c)(0x66A90411)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/empty.o -MMD)
+I (..\board.h)(0x66A8FD92)
 I (..\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\source\ti\devices\msp\msp.h)(0x66A76671)
 I (..\source\ti\devices\DeviceFamily.h)(0x66A76671)
@@ -80,7 +80,8 @@ I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\..\MSP430\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
@@ -166,7 +167,7 @@ I (..\source\ti\driverlib\dl_wwdt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_systick.h)(0x66A76671)
 F (..\board.c)(0x66A8F0C7)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/board.o -MMD)
-I (..\board.h)(0x66A8F0C7)
+I (..\board.h)(0x66A8FD92)
 I (..\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\source\ti\devices\msp\msp.h)(0x66A76671)
 I (..\source\ti\devices\DeviceFamily.h)(0x66A76671)
@@ -245,7 +246,8 @@ I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\..\MSP430\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
@@ -1092,12 +1094,13 @@ I (..\source\ti\driverlib\dl_vref.h)(0x66A76671)
 I (..\source\ti\driverlib\dl_wwdt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_systick.h)(0x66A76671)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\Hardware\inv_mpu.h)(0x66A8F0C7)
 I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\key.h)(0x66A76671)()
@@ -1176,12 +1179,13 @@ I (..\source\ti\driverlib\dl_vref.h)(0x66A76671)
 I (..\source\ti\driverlib\dl_wwdt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_systick.h)(0x66A76671)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\Hardware\inv_mpu.h)(0x66A8F0C7)
 I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\led.h)(0x66A8F0C7)()
@@ -1260,12 +1264,13 @@ I (..\source\ti\driverlib\dl_vref.h)(0x66A76671)
 I (..\source\ti\driverlib\dl_wwdt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_systick.h)(0x66A76671)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\Hardware\inv_mpu.h)(0x66A8F0C7)
 I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 I (..\Hardware\led.h)(0x66A8F0C7)
@@ -1345,18 +1350,19 @@ I (..\source\ti\driverlib\dl_vref.h)(0x66A76671)
 I (..\source\ti\driverlib\dl_wwdt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_systick.h)(0x66A76671)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\Hardware\inv_mpu.h)(0x66A8F0C7)
 I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\motor.h)(0x66A76671)()
 F (..\Hardware\CCD.c)(0x66A76671)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/ccd.o -MMD)
 I (..\Hardware\CCD.h)(0x66A76671)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\..\MSP430\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\source\ti\devices\msp\msp.h)(0x66A76671)
 I (..\source\ti\devices\DeviceFamily.h)(0x66A76671)
@@ -1435,6 +1441,7 @@ I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\CCD.h)(0x66A76671)()
@@ -1444,7 +1451,7 @@ F (..\Hardware\filter.c)(0x66A8F0C7)(-xc -std=c99 --target=arm-arm-none-eabi -mc
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\filter.h)(0x66A8F0C7)()
 F (..\Hardware\inv_mpu.c)(0x66A8F0C7)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/inv_mpu.o -MMD)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\..\MSP430\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\source\ti\devices\msp\msp.h)(0x66A76671)
 I (..\source\ti\devices\DeviceFamily.h)(0x66A76671)
@@ -1523,11 +1530,12 @@ I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\inv_mpu.h)(0x66A8F0C7)()
 F (..\Hardware\inv_mpu_dmp_motion_driver.c)(0x66A8F0C7)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/inv_mpu_dmp_motion_driver.o -MMD)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\..\MSP430\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\source\ti\devices\msp\msp.h)(0x66A76671)
 I (..\source\ti\devices\DeviceFamily.h)(0x66A76671)
@@ -1606,10 +1614,11 @@ I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)()
-F (..\Hardware\IOI2C.c)(0x66A8F0C7)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/ioi2c.o -MMD)
+F (..\Hardware\IOI2C.c)(0x66A9015C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/ioi2c.o -MMD)
 I (..\Hardware\ioi2c.h)(0x66A8F0C7)
 I (..\..\MSP430\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\source\ti\devices\msp\msp.h)(0x66A76671)
@@ -1684,17 +1693,18 @@ I (..\source\ti\driverlib\dl_vref.h)(0x66A76671)
 I (..\source\ti\driverlib\dl_wwdt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_interrupt.h)(0x66A76671)
 I (..\source\ti\driverlib\m0p\dl_systick.h)(0x66A76671)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\Hardware\inv_mpu.h)(0x66A8F0C7)
 I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\IOI2C.h)(0x66A8F0C7)()
-F (..\Hardware\MPU6050.c)(0x66A8F0C7)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/mpu6050.o -MMD)
+F (..\Hardware\MPU6050.c)(0x66A90402)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/mpu6050.o -MMD)
 I (..\Hardware\MPU6050.h)(0x66A8F0C7)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\..\MSP430\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\source\ti\devices\msp\msp.h)(0x66A76671)
 I (..\source\ti\devices\DeviceFamily.h)(0x66A76671)
@@ -1772,12 +1782,13 @@ I (..\Hardware\inv_mpu.h)(0x66A8F0C7)
 I (..\Hardware\inv_mpu_dmp_motion_driver.h)(0x66A8F0C7)
 I (..\Hardware\dmpKey.h)(0x66A8F0C7)
 I (..\Hardware\dmpmap.h)(0x66A8F0C7)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
 F (..\Hardware\mpu6050.h)(0x66A8F0C7)()
-F (..\Hardware\ICM42688.c)(0x66A8FB53)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/icm42688.o -MMD)
-I (..\Hardware\ICM42688.h)(0x66A8F814)
-I (..\..\MSP430\board.h)(0x66A8F0C7)
+F (..\Hardware\ICM42688.c)(0x66A90396)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../source -I ../source/third_party/CMSIS/Core/Include -I ../Hardware -I ../../MSPM0G3507_TB6612car -I ../include -I ../../MSP430-D__UVISION_VERSION="540" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/icm42688.o -MMD)
+I (..\Hardware\ICM42688.h)(0x66A8FCF7)
+I (..\..\MSP430\board.h)(0x66A8FD92)
 I (..\..\MSP430\ti_msp_dl_config.h)(0x66A8F0C7)
 I (..\source\ti\devices\msp\msp.h)(0x66A76671)
 I (..\source\ti\devices\DeviceFamily.h)(0x66A76671)
@@ -1858,4 +1869,4 @@ I (..\Hardware\dmpmap.h)(0x66A8F0C7)
 I (..\Hardware\mpu6050.h)(0x66A8F0C7)
 I (..\Hardware\IOI2C.h)(0x66A8F0C7)
 I (..\Hardware\filter.h)(0x66A8F0C7)
-F (..\Hardware\ICM42688.h)(0x66A8F814)()
+F (..\Hardware\ICM42688.h)(0x66A8FCF7)()
