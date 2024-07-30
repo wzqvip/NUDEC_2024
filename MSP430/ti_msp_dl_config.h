@@ -117,9 +117,9 @@ extern "C" {
 #define GPIO_UART_0_IOMUX_TX                                     (IOMUX_PINCM21)
 #define GPIO_UART_0_IOMUX_RX_FUNC                      IOMUX_PINCM22_PF_UART0_RX
 #define GPIO_UART_0_IOMUX_TX_FUNC                      IOMUX_PINCM21_PF_UART0_TX
-#define UART_0_BAUD_RATE                                                  (9600)
-#define UART_0_IBRD_4_MHZ_9600_BAUD                                         (26)
-#define UART_0_FBRD_4_MHZ_9600_BAUD                                          (3)
+#define UART_0_BAUD_RATE                                                (115200)
+#define UART_0_IBRD_4_MHZ_115200_BAUD                                        (2)
+#define UART_0_FBRD_4_MHZ_115200_BAUD                                       (11)
 /* Defines for UART_1 */
 #define UART_1_INST                                                        UART1
 #define UART_1_INST_IRQHandler                                  UART1_IRQHandler
@@ -152,12 +152,6 @@ extern "C" {
 
 
 
-/* Port definition for Pin Group GPIO_GRP_0 */
-#define GPIO_GRP_0_PORT                                                  (GPIOB)
-
-/* Defines for PIN_1: GPIOB.13 with pinCMx 30 on package pin 1 */
-#define GPIO_GRP_0_PIN_1_PIN                                    (DL_GPIO_PIN_13)
-#define GPIO_GRP_0_PIN_1_IOMUX                                   (IOMUX_PINCM30)
 /* Port definition for Pin Group AIN2 */
 #define AIN2_PORT                                                        (GPIOA)
 
@@ -206,15 +200,14 @@ extern "C" {
 /* Defines for LED_B: GPIOB.22 with pinCMx 50 on package pin 21 */
 #define LEDS_LED_B_PIN                                          (DL_GPIO_PIN_22)
 #define LEDS_LED_B_IOMUX                                         (IOMUX_PINCM50)
-/* Port definition for Pin Group KEYS */
-#define KEYS_PORT                                                        (GPIOB)
-
 /* Defines for KEY_R: GPIOB.21 with pinCMx 49 on package pin 20 */
+#define KEYS_KEY_R_PORT                                                  (GPIOB)
 #define KEYS_KEY_R_PIN                                          (DL_GPIO_PIN_21)
 #define KEYS_KEY_R_IOMUX                                         (IOMUX_PINCM49)
-/* Defines for KEY_L: GPIOB.18 with pinCMx 44 on package pin 15 */
+/* Defines for KEY_L: GPIOA.18 with pinCMx 40 on package pin 11 */
+#define KEYS_KEY_L_PORT                                                  (GPIOA)
 #define KEYS_KEY_L_PIN                                          (DL_GPIO_PIN_18)
-#define KEYS_KEY_L_IOMUX                                         (IOMUX_PINCM44)
+#define KEYS_KEY_L_IOMUX                                         (IOMUX_PINCM40)
 /* Port definition for Pin Group ENCODERA */
 #define ENCODERA_PORT                                                    (GPIOA)
 

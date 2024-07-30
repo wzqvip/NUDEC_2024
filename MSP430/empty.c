@@ -42,6 +42,7 @@ void Get_Angle(uint8_t way);
 uint8_t Way_Angle=2;                             //获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波 
 float Angle_Balance,Gyro_Balance,Gyro_Turn; //平衡倾角 平衡陀螺仪 转向陀螺仪
 float Acceleration_Z;  
+int color = 1; // 1,2,3
 
 int32_t Get_Encoder_countA,encoderA_cnt,PWMA,Get_Encoder_countB,encoderB_cnt,PWMB;
 uint8_t Key_Num = 0;
@@ -110,9 +111,12 @@ int main(void)
 
 		Get_Angle(1); // 6050
 
-		APP_Show();
+		// APP_Show();
 //        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);		
-        delay_ms(5);		
+        delay_ms(25);
+		printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);		
+		// printf("%f,%f,%f,%d,%d,%d,%d,%d,%d,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB);		
+
     }
 }
 
@@ -127,11 +131,11 @@ void TIMER_0_INST_IRQHandler(void)
 			    encoderB_cnt = Get_Encoder_countB;
 				Get_Encoder_countA = 0;
 			    Get_Encoder_countB = 0;
-			    LED_Flash(100);//LEDS闪烁
+			    LED_Flash(100, 2);//LEDS闪烁
 			    Kinematic_Analysis(Velocity,Turn);  //小车运动学分析   
 				PWMA = Velocity_A(-Target_A,encoderA_cnt);
 			    PWMB = Velocity_B(-Target_B,encoderB_cnt);
-			    Set_PWM(1000,1000);
+			    Set_PWM(PWMA,PWMB);
 		}
 		       
 	}
@@ -184,7 +188,7 @@ void APP_Show(void)
 	}
     else
 	{		
-		printf("{A%%d:%d:%d:%d:%d:%d}$",CCD_Zhongzhi,encoderA_cnt,encoderB_cnt,Pitch,Roll);//打印到APP上面 显示波形
+		printf("{A%%d:%d:%d:%d:%f:%f:%f}$",CCD_Zhongzhi,encoderA_cnt,encoderB_cnt,Pitch,Roll, Yaw);//打印到APP上面 显示波形
 	}
 }
 
