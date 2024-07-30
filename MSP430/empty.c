@@ -60,6 +60,8 @@ void Kinematic_Analysis(float velocity,float turn);
 void APP_Show(void);
 void CCD_Mode(void);
 float Velocity_KP=0.037,Velocity_KI=0.007;	       //速度控制PID参数
+
+
 int main(void)
 {
 	int i=0;
@@ -79,6 +81,21 @@ int main(void)
 	NVIC_EnableIRQ(GPIO_MULTIPLE_GPIOA_INT_IRQN);
 	NVIC_EnableIRQ(ADC_VOLTAGE_INST_INT_IRQN);
 	NVIC_EnableIRQ(TIMER_0_INST_INT_IRQN);
+
+	// 开机叫一声
+	LED_ON(0);
+	delay_ms(100);
+	LED_OFF(0);
+
+
+	// 从这里插入选择赛道的代码。
+	while(click() != 2 || click() != 3) {
+		if(click() == 1) {
+			LED_Toggle(1);
+			break;
+		}
+	}
+
     while (1) 
     {
 
