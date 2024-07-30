@@ -116,12 +116,12 @@ int main(void)
 		CCD_Mode();//CCD巡线PID
 
 		// Get_Angle(1); // 6050
-		Get_Angle_ICM(2); // ICM42688
+		Get_Angle_ICM(4); // ICM42688
 
 		// APP_Show();
 //        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);		
         delay_ms(25);
-		printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);		
+		//printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);		
 		// printf("%f,%f,%f,%d,%d,%d,%d,%d,%d,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB);		
 
     }
@@ -299,6 +299,10 @@ void Get_Angle_ICM(uint8_t way) {
             Pitch = -Complementary_Filter_x(Accel_Angle_x, gyro_x);
             Roll = -Complementary_Filter_y(Accel_Angle_y, gyro_y);
         }
+		else if (way == 4){
+			// 打印原始数据
+			printf("%f,%f,%f,%f,%f,%f\n",Accel_X,Accel_Y,Accel_Z,Gyro_X,Gyro_Y,Gyro_Z);
+		}
 
         Angle_Balance = Pitch; // 更新平衡倾角
         Gyro_Turn = Gyro_Z; // 更新转向角速度
