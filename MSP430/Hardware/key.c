@@ -20,12 +20,19 @@ All rights reserved
 uint8_t click(void)
 {
 	uint8_t key_num=0;
-	if(DL_GPIO_readPins(KEYS_PORT,KEYS_KEY_R_PIN)==0)
+	if(DL_GPIO_readPins(KEYS_KEY_R_PORT,KEYS_KEY_R_PIN)==0)
 	{
 		delay_ms(50);
-		while(DL_GPIO_readPins(KEYS_PORT,KEYS_KEY_R_PIN)==0);
+		while(DL_GPIO_readPins(KEYS_KEY_R_PORT,KEYS_KEY_R_PIN)==0);
 		delay_ms(50);
 		key_num=1;
+	}
+	else if(DL_GPIO_readPins(KEYS_KEY_L_PORT,KEYS_KEY_L_PIN)==0)
+	{
+		delay_ms(50);
+		while(DL_GPIO_readPins(KEYS_KEY_L_PORT,KEYS_KEY_L_PIN)==0);
+		delay_ms(50);
+		key_num=2;
 	}
 	return key_num;
 }

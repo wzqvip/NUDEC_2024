@@ -17,26 +17,32 @@ Update£º2024-07-019
 
 All rights reserved
 ***********************************************/
-void LED_ON(void)
+void LED_ON(int LED)
 {
-	DL_GPIO_clearPins(LEDS_PORT,LEDS_LED_R_PIN);
+	if(LED==1) DL_GPIO_clearPins(LEDS_PORT,LEDS_LED_R_PIN);
+	else if(LED==2) DL_GPIO_clearPins(LEDS_PORT,LEDS_LED_G_PIN);
+	else if(LED==3) DL_GPIO_clearPins(LEDS_PORT,LEDS_LED_B_PIN);
 }
 
-void LED_OFF(void)
+void LED_OFF(int LED)
 {
-	DL_GPIO_setPins(LEDS_PORT,LEDS_LED_R_PIN);
+	if(LED==1) DL_GPIO_setPins(LEDS_PORT,LEDS_LED_R_PIN);
+	else if(LED==2) DL_GPIO_setPins(LEDS_PORT,LEDS_LED_G_PIN);
+	else if(LED==3) DL_GPIO_setPins(LEDS_PORT,LEDS_LED_B_PIN);
 }
 
-void LED_Toggle(void)
+void LED_Toggle(int LED)
 {
-	DL_GPIO_togglePins(LEDS_PORT,LEDS_LED_R_PIN);
+	if(LED==1) DL_GPIO_togglePins(LEDS_PORT,LEDS_LED_R_PIN);
+	else if(LED==2) DL_GPIO_togglePins(LEDS_PORT,LEDS_LED_G_PIN);
+	else if(LED==3) DL_GPIO_togglePins(LEDS_PORT,LEDS_LED_B_PIN);
 }
 
-void LED_Flash(uint16_t time)
+void LED_Flash(uint16_t time, int LED) 
 {
 	static uint16_t temp;
-	if(time==0) LED_ON();
-	else if(++temp==time) LED_Toggle(),temp=0;
+	if(time==0) LED_ON(LED);
+	else if(++temp==time) LED_Toggle(LED),temp=0;
 }
 
 

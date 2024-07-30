@@ -622,13 +622,13 @@ void DMP_Init(void)
 { 
    uint8_t temp[1]={0};
    i2cRead(0x68,0x75,1,temp);
-	 printf("mpu_set_sensor complete ......\r\n");
+	 printf("mpu_set_sensor\r\n");
     
    if(temp[0]!=0x68)NVIC_SystemReset();
 	if(!mpu_init())
   {
 	  if(!mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL))
-	  	 printf("mpu_set_sensor complete ......\r\n");
+	  	 printf("mpu_set_sensor NOT complete ......\r\n");
 	  if(!mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL))
 	  	 printf("mpu_configure_fifo complete ......\r\n");
 	  if(!mpu_set_sample_rate(DEFAULT_MPU_HZ))
@@ -657,22 +657,25 @@ void DMP_Init(void)
 **************************************************************************/
 void Read_DMP(void)
 {	
-	  unsigned long sensor_timestamp;
-		unsigned char more;
-		long quat[4];
+    unsigned long sensor_timestamp;
+    unsigned char more;
+    long quat[4];
 
-				dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more);		
-				if (sensors & INV_WXYZ_QUAT )
-				{    
-					 q0=quat[0] / q30;
-					 q1=quat[1] / q30;
-					 q2=quat[2] / q30;
-					 q3=quat[3] / q30;
-					 Pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3; 	
-					 Roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3; // roll
-					 Yaw   = atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3;	//yaw
-				}
+    int result = dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more);
+    if (result != 0) {
+        printf("Error reading DMP: %d\n", result);
+        return;
+    }
 
+    if (sensors & INV_WXYZ_QUAT) {    
+        q0 = quat[0] / q30;
+        q1 = quat[1] / q30;
+        q2 = quat[2] / q30;
+        q3 = quat[3] / q30;
+        Pitch = asin(-2 * q1 * q3 + 2 * q0 * q2) * 57.3; 	
+        Roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2 * q2 + 1) * 57.3; // roll
+        Yaw = atan2(2 * (q1 * q2 + q0 * q3), q0 * q0 + q1 * q1 - q2 * q2 - q3 * q3) * 57.3; // yaw
+    }
 }
 /**************************************************************************
 函数功能：读取MPU6050内置温度传感器数据

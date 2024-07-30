@@ -3,8 +3,8 @@
 #include "ti_msp_dl_config.h"
 #include "board.h"
 
-void LED_ON(void);
-void LED_OFF(void);
-void LED_Toggle(void);
-void LED_Flash(uint16_t time);
+void LED_ON(int LED);
+void LED_OFF(int LED);
+void LED_Toggle(int LED);
+void LED_Flash(uint16_t time, int LED);
 #endif 

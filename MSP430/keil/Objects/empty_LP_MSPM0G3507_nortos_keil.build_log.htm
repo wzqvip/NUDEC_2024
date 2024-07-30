@@ -26,258 +26,20 @@ Project File Date:  07/29/2024
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.22', folder: 'C:\Users\taco\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
-Rebuild target 'MSPM0G3507_Project'
+Build target 'MSPM0G3507_Project'
 Before Build - User command #1: cmd.exe /C "C:\Users\taco\Documents\GitHub\NUDEC_2024\MSP430\keil\../tools/keil/syscfg.bat 'C:\Users\taco\Documents\GitHub\NUDEC_2024\MSP430\keil\' empty.syscfg"
 Using Sysconfig Tool from "C:\ti\sysconfig_1.20.0\sysconfig_cli.bat"
 "Update the file located at <sdk path>/tools/keil/syscfg.bat to use a different version"
 "Couldn't find .metadata\product.json"
 Invalid argument '-s': File "C:\.metadata\product.json" does not exist
-compiling dl_vref.c...
-compiling dl_opa.c...
-assembling startup_mspm0g350x_uvision.s...
-compiling dl_trng.c...
-compiling dl_rtc_common.c...
-compiling empty.c...
-compiling dl_uart.c...
-compiling dl_spi.c...
-compiling board.c...
-compiling dl_timer.c...
-compiling ti_msp_dl_config.c...
-compiling dl_mathacl.c...
-compiling dl_lfss.c...
-compiling dl_lcd.c...
-compiling dl_keystorectl.c...
-compiling dl_dma.c...
-compiling dl_i2c.c...
-compiling dl_crcp.c...
-compiling dl_mcan.c...
-compiling dl_common.c...
-compiling dl_dac12.c...
-compiling dl_crc.c...
-compiling dl_aesadv.c...
-compiling dl_adc12.c...
-compiling dl_aes.c...
-compiling dl_interrupt.c...
-compiling dl_flashctl.c...
-compiling filter.c...
-compiling key.c...
-compiling led.c...
-compiling encoder.c...
-compiling motor.c...
-../Hardware/inv_mpu.c(851): error: call to undeclared function 'mpu_set_gyro_fsr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  851 |     if (mpu_set_gyro_fsr(2000))
-      |         ^
-../Hardware/inv_mpu.c(853): error: call to undeclared function 'mpu_set_accel_fsr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  853 |     if (mpu_set_accel_fsr(2))
-      |         ^
-../Hardware/inv_mpu.c(855): error: call to undeclared function 'mpu_set_lpf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  855 |     if (mpu_set_lpf(42))
-      |         ^
-../Hardware/inv_mpu.c(857): error: call to undeclared function 'mpu_set_sample_rate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  857 |     if (mpu_set_sample_rate(50))
-      |         ^
-../Hardware/inv_mpu.c(859): error: call to undeclared function 'mpu_configure_fifo'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  859 |     if (mpu_configure_fifo(0))
-      |         ^
-../Hardware/inv_mpu.c(871): error: call to undeclared function 'mpu_set_bypass'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  871 |     if (mpu_set_bypass(0))
-      |         ^
-../Hardware/inv_mpu.c(875): error: call to undeclared function 'mpu_set_sensors'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  875 |     mpu_set_sensors(0);
-      |     ^
-../Hardware/inv_mpu.c(902): error: call to undeclared function 'mpu_set_int_latched'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  902 |         mpu_set_int_latched(0);
-      |         ^
-../Hardware/inv_mpu.c(917): error: call to undeclared function 'mpu_set_int_latched'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  917 |     mpu_set_int_latched(1);
-      |     ^
-../Hardware/inv_mpu.c(922): error: call to undeclared function 'mpu_set_lpf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  922 |         mpu_set_lpf(5);
-      |         ^
-../Hardware/inv_mpu.c(925): error: call to undeclared function 'mpu_set_lpf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  925 |         mpu_set_lpf(5);
-      |         ^
-../Hardware/inv_mpu.c(928): error: call to undeclared function 'mpu_set_lpf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  928 |         mpu_set_lpf(10);
-      |         ^
-../Hardware/inv_mpu.c(931): error: call to undeclared function 'mpu_set_lpf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  931 |         mpu_set_lpf(20);
-      |         ^
-../Hardware/inv_mpu.c(964): error: use of undeclared identifier 'INV_XYZ_ACCEL'
-  964 |     st.chip_cfg.sensors = INV_XYZ_ACCEL;
-      |                           ^
-../Hardware/inv_mpu.c(967): error: call to undeclared function 'mpu_configure_fifo'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  967 |     mpu_configure_fifo(0);
-      |     ^
-../Hardware/inv_mpu.c(982): error: use of undeclared identifier 'INV_XYZ_GYRO'
-  982 |     if (!(st.chip_cfg.sensors & INV_XYZ_GYRO))
-      |                                 ^
-../Hardware/inv_mpu.c(991): error: call to undeclared function 'myget_ms'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  991 |         get_ms(timestamp);
-      |         ^
-../Hardware/inv_mpu.c(48): note: expanded from macro 'get_ms'
-   48 | #define get_ms      myget_ms
-      |                     ^
-../Hardware/inv_mpu.c(1005): error: use of undeclared identifier 'INV_XYZ_ACCEL'
- 1005 |     if (!(st.chip_cfg.sensors & INV_XYZ_ACCEL))
-      |                                 ^
-../Hardware/inv_mpu.c(1014): error: call to undeclared function 'myget_ms'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
- 1014 |         get_ms(timestamp);
-      |         ^
-../Hardware/inv_mpu.c(48): note: expanded from macro 'get_ms'
-   48 | #define get_ms      myget_ms
-      |                     ^
-fatal error: too many errors emitted, stopping now [-ferror-limit=]
-20 errors generated.
+../Hardware/inv_mpu.c(1808): error: use of undeclared identifier 'sensors'
+ 1808 |             sensors[0] = 0;
+      |             ^
+1 error generated.
 compiling inv_mpu.c...
-compiling CCD.c...
-../Hardware/inv_mpu_dmp_motion_driver.c(498): error: call to undeclared function 'mpu_load_firmware'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  498 |     return mpu_load_firmware(DMP_CODE_SIZE, dmp_memory, sStartAddress,
-      |            ^
-../Hardware/inv_mpu_dmp_motion_driver.c(512): error: use of undeclared identifier 'DINA4C'
-  512 |     const unsigned char gyro_axes[3] = {DINA4C, DINACD, DINA6C};
-      |                                         ^
-../Hardware/inv_mpu_dmp_motion_driver.c(512): error: use of undeclared identifier 'DINACD'
-  512 |     const unsigned char gyro_axes[3] = {DINA4C, DINACD, DINA6C};
-      |                                                 ^
-../Hardware/inv_mpu_dmp_motion_driver.c(512): error: use of undeclared identifier 'DINA6C'
-  512 |     const unsigned char gyro_axes[3] = {DINA4C, DINACD, DINA6C};
-      |                                                         ^
-../Hardware/inv_mpu_dmp_motion_driver.c(513): error: use of undeclared identifier 'DINA0C'
-  513 |     const unsigned char accel_axes[3] = {DINA0C, DINAC9, DINA2C};
-      |                                          ^
-../Hardware/inv_mpu_dmp_motion_driver.c(513): error: use of undeclared identifier 'DINAC9'
-  513 |     const unsigned char accel_axes[3] = {DINA0C, DINAC9, DINA2C};
-      |                                                  ^
-../Hardware/inv_mpu_dmp_motion_driver.c(513): error: use of undeclared identifier 'DINA2C'
-  513 |     const unsigned char accel_axes[3] = {DINA0C, DINAC9, DINA2C};
-      |                                                          ^
-../Hardware/inv_mpu_dmp_motion_driver.c(514): error: use of undeclared identifier 'DINA36'
-  514 |     const unsigned char gyro_sign[3] = {DINA36, DINA56, DINA76};
-      |                                         ^
-../Hardware/inv_mpu_dmp_motion_driver.c(514): error: use of undeclared identifier 'DINA56'
-  514 |     const unsigned char gyro_sign[3] = {DINA36, DINA56, DINA76};
-      |                                                 ^
-../Hardware/inv_mpu_dmp_motion_driver.c(514): error: use of undeclared identifier 'DINA76'
-  514 |     const unsigned char gyro_sign[3] = {DINA36, DINA56, DINA76};
-      |                                                         ^
-../Hardware/inv_mpu_dmp_motion_driver.c(515): error: use of undeclared identifier 'DINA26'
-  515 |     const unsigned char accel_sign[3] = {DINA26, DINA46, DINA66};
-      |                                          ^
-../Hardware/inv_mpu_dmp_motion_driver.c(515): error: use of undeclared identifier 'DINA46'
-  515 |     const unsigned char accel_sign[3] = {DINA26, DINA46, DINA66};
-      |                                                  ^
-../Hardware/inv_mpu_dmp_motion_driver.c(515): error: use of undeclared identifier 'DINA66'
-  515 |     const unsigned char accel_sign[3] = {DINA26, DINA46, DINA66};
-      |                                                          ^
-../Hardware/inv_mpu_dmp_motion_driver.c(525): error: call to undeclared function 'mpu_write_mem'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  525 |     if (mpu_write_mem(FCFG_1, 3, gyro_regs))
-      |         ^
-../Hardware/inv_mpu_dmp_motion_driver.c(530): error: call to undeclared library function 'memcpy' with type 'void *(void *, const void *, unsigned int)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  530 |     memcpy(gyro_regs, gyro_sign, 3);
-      |     ^
-../Hardware/inv_mpu_dmp_motion_driver.c(530): note: include the header <string.h> or explicitly provide a declaration for 'memcpy'
-../Hardware/inv_mpu_dmp_motion_driver.c(593): error: call to undeclared function 'mpu_write_mem'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  593 |     if (mpu_write_mem(D_EXT_GYRO_BIAS_X, 4, regs))
-      |         ^
-../Hardware/inv_mpu_dmp_motion_driver.c(623): error: call to undeclared function 'mpu_get_accel_sens'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  623 |     mpu_get_accel_sens(&accel_sens);
-      |     ^
-../Hardware/inv_mpu_dmp_motion_driver.c(623): note: did you mean 'dmp_set_accel_bias'?
-../Hardware/inv_mpu_dmp_motion_driver.c(616): note: 'dmp_set_accel_bias' declared here
-  616 | int dmp_set_accel_bias(long *bias)
-      |     ^
-  617 | {
-  618 |     long accel_bias_body[3];
-  619 |     unsigned char regs[12];
-  620 |     long long accel_sf;
-  621 |     unsigned short accel_sens;
-  622 | 
-  623 |     mpu_get_accel_sens(&accel_sens);
-      |     ~~~~~~~~~~~~~~~~~~
-      |     dmp_set_accel_bias
-../Hardware/inv_mpu_dmp_motion_driver.c(659): error: call to undeclared function 'mpu_write_mem'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  659 |     return mpu_write_mem(D_ACCEL_BIAS, 12, regs);
-      |            ^
-../Hardware/inv_mpu_dmp_motion_driver.c(670): error: use of undeclared identifier 'DINAFE'
-  670 |     const unsigned char regs_end[12] = {DINAFE, DINAF2, DINAAB,
-      |                                         ^
-fatal error: too many errors emitted, stopping now [-ferror-limit=]
-20 errors generated.
-compiling inv_mpu_dmp_motion_driver.c...
-compiling IOI2C.c...
-../Hardware/MPU6050.c(427): error: call to undeclared function 'mpu_run_self_test'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  427 |     result = mpu_run_self_test(gyro, accel);
-      |              ^
-../Hardware/MPU6050.c(427): note: did you mean 'run_self_test'?
-../Hardware/MPU6050.c(422): note: 'run_self_test' declared here
-  422 | static void run_self_test(void)
-      |             ^
-  423 | {
-  424 |     int result;
-  425 |     long gyro[3], accel[3];
-  426 | 
-  427 |     result = mpu_run_self_test(gyro, accel);
-      |              ~~~~~~~~~~~~~~~~~
-      |              run_self_test
-../Hardware/MPU6050.c(434): error: call to undeclared function 'mpu_get_gyro_sens'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  434 |         mpu_get_gyro_sens(&sens);
-      |         ^
-../Hardware/MPU6050.c(438): error: call to undeclared function 'dmp_set_gyro_bias'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  438 |         dmp_set_gyro_bias(gyro);
-      |         ^
-../Hardware/MPU6050.c(439): error: call to undeclared function 'mpu_get_accel_sens'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  439 |         mpu_get_accel_sens(&accel_sens);
-      |         ^
-../Hardware/MPU6050.c(443): error: call to undeclared function 'dmp_set_accel_bias'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  443 |         dmp_set_accel_bias(accel);
-      |         ^
-../Hardware/MPU6050.c(628): error: call to undeclared function 'mpu_init'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  628 |         if(!mpu_init())
-      |             ^
-../Hardware/MPU6050.c(630): error: call to undeclared function 'mpu_set_sensors'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  630 |           if(!mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL))
-      |               ^
-../Hardware/MPU6050.c(630): error: use of undeclared identifier 'INV_XYZ_GYRO'
-  630 |           if(!mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL))
-      |                               ^
-../Hardware/MPU6050.c(630): error: use of undeclared identifier 'INV_XYZ_ACCEL'
-  630 |           if(!mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL))
-      |                                              ^
-../Hardware/MPU6050.c(632): error: call to undeclared function 'mpu_configure_fifo'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  632 |           if(!mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL))
-      |               ^
-../Hardware/MPU6050.c(632): error: use of undeclared identifier 'INV_XYZ_GYRO'
-  632 |           if(!mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL))
-      |                                  ^
-../Hardware/MPU6050.c(632): error: use of undeclared identifier 'INV_XYZ_ACCEL'
-  632 |           if(!mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL))
-      |                                                 ^
-../Hardware/MPU6050.c(634): error: call to undeclared function 'mpu_set_sample_rate'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  634 |           if(!mpu_set_sample_rate(DEFAULT_MPU_HZ))
-      |               ^
-../Hardware/MPU6050.c(636): error: call to undeclared function 'dmp_load_motion_driver_firmware'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  636 |           if(!dmp_load_motion_driver_firmware())
-      |               ^
-../Hardware/MPU6050.c(638): error: call to undeclared function 'dmp_set_orientation'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  638 |           if(!dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation)))
-      |               ^
-../Hardware/MPU6050.c(640): error: call to undeclared function 'dmp_enable_feature'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  640 |           if(!dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
-      |               ^
-../Hardware/MPU6050.c(640): error: use of undeclared identifier 'DMP_FEATURE_6X_LP_QUAT'
-  640 |           if(!dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
-      |                                  ^
-../Hardware/MPU6050.c(640): error: use of undeclared identifier 'DMP_FEATURE_TAP'
-  640 |           if(!dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
-      |                                                           ^
-../Hardware/MPU6050.c(641): error: use of undeclared identifier 'DMP_FEATURE_ANDROID_ORIENT'
-  641 |                 DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
-      |                 ^
-fatal error: too many errors emitted, stopping now [-ferror-limit=]
-20 errors generated.
 compiling MPU6050.c...
-".\Objects\empty_LP_MSPM0G3507_nortos_keil.axf" - 57 Error(s), 0 Warning(s).
+compiling inv_mpu_dmp_motion_driver.c...
+".\Objects\empty_LP_MSPM0G3507_nortos_keil.axf" - 1 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -290,7 +52,7 @@ Package Vendor: TexasInstruments
 
 <h2>Collection of Component Files used:</h2>
 Target not created.
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
