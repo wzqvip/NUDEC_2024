@@ -62,8 +62,11 @@ int main(void)
 	int tslp=0;
 	SYSCFG_DL_init();
 
-	MPU6050_initialize();
-	DMP_Init();
+	// Init the sensor
+	// MPU6050_initialize();
+	// DMP_Init();
+	ICM42688_init();
+
 
     DL_Timer_startCounter(PWM_0_INST);
 	NVIC_ClearPendingIRQ(UART_0_INST_INT_IRQN);
@@ -109,7 +112,8 @@ int main(void)
         Find_CCD_Median();
 		CCD_Mode();//CCD巡线PID
 
-		Get_Angle(1); // 6050
+		// Get_Angle(1); // 6050
+		Get_Angle_ICM(1); // ICM42688
 
 		// APP_Show();
 //        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);		
@@ -256,7 +260,48 @@ void Get_Angle(uint8_t way)
 }
 
 
+void Get_Angle_ICM(uint8_t way) {
+    float gyro_x, gyro_y, accel_x, accel_y, accel_z;
+    float Accel_Y, Accel_Z, Accel_X, Accel_Angle_x, Accel_Angle_y, Gyro_X, Gyro_Z, Gyro_Y;
+    static float Angle_Balance, Gyro_Balance, Gyro_Turn, Acceleration_Z;
 
+    if (way == 1) { // DMP读取
+        Read_DMP(); // 读取加速度、角速度、倾角
+        Angle_Balance = Pitch; // 更新平衡倾角, 前倾为正，后倾为负
+        Gyro_Balance = gyro[0]; // 更新平衡角速度, 前倾为正，后倾为负
+        Gyro_Turn = gyro[2]; // 更新转向角速度
+        Acceleration_Z = accel[2]; // 更新Z轴加速度计
+    } else {
+        Gyro_X = DFRobot_ICM42688_getGyroDataX();
+        Gyro_Y = DFRobot_ICM42688_getGyroDataY();
+        Gyro_Z = DFRobot_ICM42688_getGyroDataZ();
+        Accel_X = DFRobot_ICM42688_getAccelDataX();
+        Accel_Y = DFRobot_ICM42688_getAccelDataY();
+        Accel_Z = DFRobot_ICM42688_getAccelDataZ();
+
+        Gyro_Balance = -Gyro_X; // 更新平衡角速度
+        Accel_Angle_x = atan2(Accel_Y, Accel_Z) * 180 / Pi; // 计算倾角，转换单位为度
+        Accel_Angle_y = atan2(Accel_X, Accel_Z) * 180 / Pi; // 计算倾角，转换单位为度
+
+        accel_x = Accel_X / 1671.84;
+        accel_y = Accel_Y / 1671.84;
+        accel_z = Accel_Z / 1671.84;
+        gyro_x = Gyro_X / 16.4; // 陀螺仪量程转换
+        gyro_y = Gyro_Y / 16.4; // 陀螺仪量程转换
+
+        if (way == 2) { // 卡尔曼滤波
+            Pitch = -Kalman_Filter_x(Accel_Angle_x, gyro_x);
+            Roll = -Kalman_Filter_y(Accel_Angle_y, gyro_y);
+        } else if (way == 3) { // 互补滤波
+            Pitch = -Complementary_Filter_x(Accel_Angle_x, gyro_x);
+            Roll = -Complementary_Filter_y(Accel_Angle_y, gyro_y);
+        }
+
+        Angle_Balance = Pitch; // 更新平衡倾角
+        Gyro_Turn = Gyro_Z; // 更新转向角速度
+        Acceleration_Z = Accel_Z; // 更新Z轴加速度计
+    }
+}
 
 
 

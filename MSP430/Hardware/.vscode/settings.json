@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "ioi2c.h": "c",
+        "icm42688.h": "c"
+    }
+}

@@ -7,6 +7,7 @@
 #include "dmpKey.h"
 #include "dmpmap.h"
 #include "mpu6050.h"
+#include "ICM42688.h"
 #include "IOI2C.h"
 #include "filter.h"
 #include "string.h"
