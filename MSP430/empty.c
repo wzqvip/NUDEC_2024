@@ -54,7 +54,7 @@ extern uint16_t ADV[128];
 extern volatile bool gCheckADC;
 extern uint8_t PID_Send;
 int Motor_A,Motor_B,Target_A,Target_B;           //电机舵机控制相关 
-float Velocity=15,Turn;
+float Velocity=15,Turn = 0;
 uint8_t CCD_Zhongzhi;
 void Kinematic_Analysis(float velocity,float turn);
 void APP_Show(void);
@@ -66,8 +66,8 @@ int main(void)
 	int tslp=0;
 	SYSCFG_DL_init();
 
-	MPU6050_initialize();
-	DMP_Init();
+	// MPU6050_initialize();
+	// DMP_Init();
 
     DL_Timer_startCounter(PWM_0_INST);
 	NVIC_ClearPendingIRQ(UART_0_INST_INT_IRQN);
@@ -117,7 +117,7 @@ int main(void)
 
 		
 		// MPU6050获取角度的代码
-		Get_Angle(1); // 6050
+		// Get_Angle(1); // 6050
 		//结束6050
 
 		// APP_Show();
@@ -142,8 +142,9 @@ void TIMER_0_INST_IRQHandler(void)
 			    Get_Encoder_countB = 0;
 			    LED_Flash(100, 2);//LEDS闪烁
 			    Kinematic_Analysis(Velocity,Turn);  //小车运动学分析   
-				PWMA = Velocity_A(-Target_A,encoderA_cnt);
+				PWMA = Velocity_A(-Target_A,-encoderA_cnt);
 			    PWMB = Velocity_B(-Target_B,encoderB_cnt);
+
 				// printf("%d %d %d %d %d %d %d %d %d %d\n",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP,Velocity_KI,Velocity);
 			    Set_PWM(PWMA,PWMB);
 		}
@@ -184,6 +185,7 @@ void CCD_Mode(void)
 	 static float Bias,Last_Bias;
 	 Bias=CCD_Zhongzhi-64;   //提取偏差
 	 Turn=Bias*Velocity_KP+(Bias-Last_Bias)*Velocity_KI; //PD控制
+	 Turn = 0;
 	 Last_Bias=Bias;   //保存上一次的偏差
 }
 
