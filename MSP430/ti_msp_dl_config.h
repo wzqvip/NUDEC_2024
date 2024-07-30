@@ -243,6 +243,18 @@ extern "C" {
 /* Defines for SDA: GPIOA.1 with pinCMx 2 on package pin 34 */
 #define I2C_SDA_PIN                                              (DL_GPIO_PIN_1)
 #define I2C_SDA_IOMUX                                             (IOMUX_PINCM2)
+/* Port definition for Pin Group BEEPER */
+#define BEEPER_PORT                                                      (GPIOB)
+
+/* Defines for BEEP: GPIOB.11 with pinCMx 28 on package pin 63 */
+#define BEEPER_BEEP_PIN                                         (DL_GPIO_PIN_11)
+#define BEEPER_BEEP_IOMUX                                        (IOMUX_PINCM28)
+/* Port definition for Pin Group EXTENAL_KEY */
+#define EXTENAL_KEY_PORT                                                 (GPIOB)
+
+/* Defines for BUTTON: GPIOB.5 with pinCMx 18 on package pin 53 */
+#define EXTENAL_KEY_BUTTON_PIN                                   (DL_GPIO_PIN_5)
+#define EXTENAL_KEY_BUTTON_IOMUX                                 (IOMUX_PINCM18)
 
 
 
