@@ -89,8 +89,8 @@ int main(void)
 
 
 	// 从这里插入选择赛道的代码。
-	while(click() != 2 || click() != 3) {
-		if(click() == 1) {
+	while(1) {
+		if(click() == 3) {
 			LED_Toggle(1);
 			break;
 		}
