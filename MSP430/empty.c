@@ -53,9 +53,14 @@ void slove_data(void);
 char binToHex_low(uint8_t num);
 char binToHex_high(uint8_t num);
 void sendToPc(void);
+int Turn_Flag_CNT;
+int Turn_Flag;
+
+
 
 int main(void)
 {
+
 	int i = 0;
 	int tslp = 0;
 	SYSCFG_DL_init();
@@ -71,6 +76,7 @@ int main(void)
 	NVIC_EnableIRQ(TIMER_0_INST_INT_IRQN);
 	while (1)
 	{
+		Turn_Flag_CNT = 0;
 		DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN);
 		delay_us(5);										 // TSL_CLK=1;
 		DL_GPIO_clearPins(GPIO_SI_PORT, GPIO_SI_PIN_25_PIN); // TSL_SI=0;
@@ -91,28 +97,60 @@ int main(void)
 		DL_GPIO_clearPins(GPIO_SI_PORT, GPIO_SI_PIN_25_PIN); // TSL_SI=0;
 		delay_us(10);
 		DL_GPIO_clearPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN); // TSL_CLK=0;
-		delay_us(100);
+		delay_us(50);
 
 		for (i = 0; i < 128; i++) // 读取128个像素点电压值
 		{
 			DL_GPIO_clearPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN); // TSL_CLK=0;
-			delay_us(100);										   // 调节曝光时间
+			delay_us(15);										   // 调节曝光时间
 
 			ADV[i] = (adc_getValue()) >> 4; // 右移4位是/4操作，将数据范围从0-4096压缩到0-256方便数据处理
 
 			DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN); // TSL_CLK=1;
+
+			if (ADV[i] < 200)
+			{
+				Turn_Flag_CNT += 1;
+			}
 			delay_us(20);
 		}
 		Find_CCD_Median();
 		CCD_Mode(); // CCD巡线PID
-		APP_Show();
-		//        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
-		delay_ms(5);
+		
+		if(Turn_Flag_CNT > 5)
+		{
+			Turn_Flag = 1;
+		}
+		else
+		{
+			Turn_Flag = 0;
+		}
+		
+		switch (Turn_Flag)
+		{
+		case 1:
+			Set_PWM(500 + 110 * Turn, 500 - 110 * Turn);
+			delay_ms(5);
+			break;
+
+		case 0:
+			Set_PWM(500, 500);
+			delay_ms(100);
+			break;
+		default:
+			Set_PWM(500, 500);
+			delay_ms(100);
+			break;
+		}
+
+		 APP_Show();
+		//         printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
 	}
 }
 
 void TIMER_0_INST_IRQHandler(void)
 {
+
 	if (DL_TimerA_getPendingInterrupt(TIMER_0_INST))
 	{
 		if (DL_TIMER_IIDX_ZERO)
@@ -125,7 +163,16 @@ void TIMER_0_INST_IRQHandler(void)
 			Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
 			PWMA = Velocity_A(-Target_A, encoderA_cnt);
 			PWMB = Velocity_B(-Target_B, encoderB_cnt);
-			Set_PWM(PWMA, PWMB);
+
+			//			if(Turn_Flag)
+			//			{
+			//			Set_PWM(500 + 110 * Turn, 500 - 110 * Turn);
+			//			}
+			//			if(!Turn_Flag)
+			//			//else
+			//			{
+			//			Set_PWM(500, 500);
+			//			}
 		}
 	}
 }
@@ -176,8 +223,10 @@ void APP_Show(void)
 	}
 	else
 	{
-		printf("{A%%d:%d:%d:%d}$", CCD_Zhongzhi, encoderA_cnt, encoderB_cnt); // 打印到APP上面 显示波形
-		sendToPc();
+		// printf("{A%d:%d}$", encoderA_cnt, encoderB_cnt); // 打印到APP上面 显示波形
+		printf("%d:%d:%d\r\n", CCD_Zhongzhi, Turn_Flag, Turn_Flag_CNT);
+		// delay_ms(100);
+		//sendToPc();
 	}
 }
 

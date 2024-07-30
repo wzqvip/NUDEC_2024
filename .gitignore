@@ -38,3 +38,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+/MSP430/keil/Objects
