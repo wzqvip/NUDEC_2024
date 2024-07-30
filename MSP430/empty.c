@@ -37,6 +37,8 @@
 #include "CCD.h"
 
 int track_num = 0;
+int DEBUG = 0;
+int DEBUG_PWM = 0;
 
 // 6050
 void Get_Angle(uint8_t way);
@@ -79,6 +81,8 @@ int main(void)
 	NVIC_EnableIRQ(TIMER_0_INST_INT_IRQN);
     while (1) 
     {
+
+		// 这段是CCD的代码
 		DL_GPIO_setPins(GPIO_CLK_PORT,GPIO_CLK_PIN_23_PIN); delay_us(5);//TSL_CLK=1;
 		DL_GPIO_clearPins(GPIO_SI_PORT,GPIO_SI_PIN_25_PIN); //TSL_SI=0;  
 		delay_us(10);
@@ -97,7 +101,6 @@ int main(void)
 		DL_GPIO_clearPins(GPIO_CLK_PORT,GPIO_CLK_PIN_23_PIN); //TSL_CLK=0;  
 		delay_us(100);
 
-
 		for(i=0;i<128;i++)					//读取128个像素点电压值
 		{ 
 		DL_GPIO_clearPins(GPIO_CLK_PORT,GPIO_CLK_PIN_23_PIN); //TSL_CLK=0;
@@ -110,19 +113,23 @@ int main(void)
 		}
         Find_CCD_Median();
 		CCD_Mode();//CCD巡线PID
+		// 结束CCD
 
+		
+		// MPU6050获取角度的代码
 		Get_Angle(1); // 6050
+		//结束6050
 
 		// APP_Show();
 //        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);		
         delay_ms(25);
-		printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);		
-		// printf("%f,%f,%f,%d,%d,%d,%d,%d,%d,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB);		
+		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);		
+		printf("%f,%f,%f,%d,%d,%d,%d,%d,%d,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB);		
 
     }
 }
 
-
+// 运动学使用这个地方的循环定时器来处理。
 void TIMER_0_INST_IRQHandler(void)
 {
 	if(DL_TimerA_getPendingInterrupt(TIMER_0_INST))
@@ -137,6 +144,7 @@ void TIMER_0_INST_IRQHandler(void)
 			    Kinematic_Analysis(Velocity,Turn);  //小车运动学分析   
 				PWMA = Velocity_A(-Target_A,encoderA_cnt);
 			    PWMB = Velocity_B(-Target_B,encoderB_cnt);
+				// printf("%d %d %d %d %d %d %d %d %d %d\n",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP,Velocity_KI,Velocity);
 			    Set_PWM(PWMA,PWMB);
 		}
 		       
