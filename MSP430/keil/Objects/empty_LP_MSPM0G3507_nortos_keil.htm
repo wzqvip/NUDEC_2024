@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\empty_LP_MSPM0G3507_nortos_keil.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\empty_LP_MSPM0G3507_nortos_keil.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Thu Aug  1 05:10:37 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Thu Aug  1 06:24:20 2024
 <BR><P>
 <H3>Maximum Stack Usage =        264 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -624,13 +624,13 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DL_Timer_setCaptureCompareValue
 </UL>
 <BR>[Called By]<UL><LI><a href="#[15]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMA0_IRQHandler
+<LI><a href="#[1e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[15]"></a>TIMA0_IRQHandler</STRONG> (Thumb, 152 bytes, Stack size 32 bytes, empty.o(.text.TIMA0_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = TIMA0_IRQHandler &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Set_PWM
-<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Velocity_B
+<BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Velocity_B
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Velocity_A
 <LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2iz
@@ -638,6 +638,7 @@ Global Symbols
 <LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_Flash
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Set_PWM
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_mspm0g350x_uvision.o(RESET)
 </UL>
@@ -704,10 +705,11 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> printf1.o(i.__0printf$1)
 </UL>
-<P><STRONG><a name="[1e]"></a>main</STRONG> (Thumb, 616 bytes, Stack size 104 bytes, empty.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 164<LI>Call Chain = main &rArr; SYSCFG_DL_init &rArr; SYSCFG_DL_PWM_0_init &rArr; DL_TimerA_initPWMMode
+<P><STRONG><a name="[1e]"></a>main</STRONG> (Thumb, 696 bytes, Stack size 112 bytes, empty.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 172<LI>Call Chain = main &rArr; SYSCFG_DL_init &rArr; SYSCFG_DL_PWM_0_init &rArr; DL_TimerA_initPWMMode
 </UL>
-<BR>[Calls]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Find_CCD_Median
+<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Set_PWM
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Find_CCD_Median
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;adc_getValue
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_us
 <LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd

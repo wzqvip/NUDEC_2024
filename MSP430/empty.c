@@ -179,6 +179,27 @@ int main(void)
 		}
 		Find_CCD_Median();
 
+		// 赛道区别
+		if (track_num == 0) {
+			if (Turn_Flag == 1) {
+				Velocity = 0;
+				Turn = 0;
+				Set_PWM(0,0);
+				LED_Blink(0,1000);
+				while(1);
+			}
+		}
+
+		if (track_num == 0) {
+			if (Total_turns == 2) {
+				Velocity = 0;
+				Turn = 0;
+				Set_PWM(0,0);
+				LED_Blink(0,1000);
+				while(1);
+			}
+		}
+
 		if (Turn_Flag == 1)
 		{ // 巡线模式
 			if (last_state__ == 0)
