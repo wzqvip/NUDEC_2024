@@ -41,7 +41,7 @@ extern uint16_t ADV[128];
 extern volatile bool gCheckADC;
 extern uint8_t PID_Send;
 int Motor_A, Motor_B, Target_A, Target_B; // 电机舵机控制相关
-float Velocity = 15, Turn;
+float Velocity = 5, Turn;
 uint8_t CCD_Zhongzhi;
 void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
@@ -99,7 +99,7 @@ int main(void)
 		Find_CCD_Median();
 		CCD_Mode(); // CCD巡线PID
 		APP_Show();
-		//        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
+		// printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
 		delay_ms(5);
 	}
 }
@@ -169,6 +169,8 @@ void APP_Show(void)
 	}
 	else
 	{
-		printf("{A%%d:%d:%d:%d}$", CCD_Zhongzhi, encoderA_cnt, encoderB_cnt); // 打印到APP上面 显示波形
+		// printf("{A%%d:%d:%d:%d}$", CCD_Zhongzhi, encoderA_cnt, encoderB_cnt); // 打印到APP上面 显示波形
+			printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
+
 	}
 }
