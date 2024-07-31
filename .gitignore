@@ -37,3 +37,8 @@ Mkfile.old
 dkms.conf
 *.hex
 *.taco
+MSP430/keil/empty_LP_MSPM0G3507_nortos_keil.uvguix.taco
+MSP430/keil/Objects/empty_LP_MSPM0G3507_nortos_keil.axf
+MSP430/keil/Objects/empty_LP_MSPM0G3507_nortos_keil.hex
+MSP430/keil/Objects/empty_LP_MSPM0G3507_nortos_keil.htm
+MSP430/keil/Objects/empty_LP_MSPM0G3507_nortos_keil_MSPM0G3507_Project.dep
