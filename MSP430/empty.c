@@ -48,7 +48,11 @@ void __stack_chk_fail(void)
 bool Turn_Flag = 0;
 bool last_state__ = 0;
 
+
 int Diff_Delta = 1300;
+int Total_A_CNT = 0;
+int Total_B_CNT = 0;
+int Delta_Target = 0;
 
 uint8_t track_num = 0;
 
@@ -61,9 +65,7 @@ float Angle_Balance, Gyro_Balance, Gyro_Turn; // 平衡倾角 平衡陀螺仪 转向陀螺仪
 float Acceleration_Z;
 int color = 1; // 1,2,3
 
-int Total_A_CNT = 0;
-int Total_B_CNT = 0;
-int Delta_Target = 0;
+
 
 int32_t Get_Encoder_countA, encoderA_cnt, PWMA, Get_Encoder_countB, encoderB_cnt, PWMB;
 uint8_t Key_Num = 0;
@@ -196,6 +198,11 @@ int main(void)
 		CCD_Mode(); // CCD巡线PID
 		// 结束CCD
 
+		if (Turn_Flag == 1) {
+			if (last_state__ == 0) {
+			}
+		}
+
 		// printf("AGL\n");
 		// MPU6050获取角度的代码
 		// Get_Angle(1); // 6050
@@ -211,7 +218,7 @@ int main(void)
 	}
 }
 
-// 运动学使用这个地方的循环定时器来处理。
+// 运动学【！！！！不要！！！】使用这个地方的循环定时器来处理。
 void TIMER_0_INST_IRQHandler(void)
 {
 	if (DL_TimerA_getPendingInterrupt(TIMER_0_INST))
@@ -220,73 +227,19 @@ void TIMER_0_INST_IRQHandler(void)
 		{
 			encoderA_cnt = Get_Encoder_countA;
 			encoderB_cnt = Get_Encoder_countB;
-			Get_Encoder_countA = 0;
-			Get_Encoder_countB = 0;
-			LED_Flash(100, 2);					// LEDS闪烁
-
-			if (Turn_Flag == 1) // 寻
-			{
-				if (last_state__ == 0)
-				{
-					// printf("L\n");
-					// LED_Blink(0, 50); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
-					last_state__ = 1;
-					Total_turns+=1;
-				}
-				Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
-			}
-			else // 直线 Turn flag = 0;
-			{
-				if (last_state__ == 1)
-				{
-					// printf("S\n");
-					// LED_Blink(0, 50); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
-					last_state__ = 0;
-				}
-
-				if (Total_turns > 0)
-				{ // 注意B是负数。
-					Delta_Target = Diff_Delta * Total_turns;
-					if ((Total_A_CNT + Total_B_CNT) > Delta_Target)
-					{
-						// A 走多了
-						// printf("A\n");
-						Target_A = Velocity - 1;
-						Target_B = Velocity + 2;
-					}
-					else if ((Total_A_CNT + Total_B_CNT) < Delta_Target)
-					{
-						// B 走多了
-						// printf("B\n");
-						Target_A = Velocity + 2;
-						Target_B = Velocity - 1;
-					}
-					else
-					{
-						Target_A = Velocity;
-						Target_B = Velocity;
-					}
-				}
-				else
-				{
-					Target_A = Velocity;
-					Target_B = Velocity;
-				}
-
-				// 这一步之前的TargetA/B 就是小车两边轮子的目标速度。
-			}
-
-			PWMA = Velocity_A(-Target_A, -encoderA_cnt); // 这边用来校准计数器。确保速度闭环
-			PWMB = Velocity_B(-Target_B, encoderB_cnt);
-
-			// printf("%d %d %d %d %d %d %d %d %d %d\n",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP,Velocity_KI,Velocity);
-			Set_PWM(PWMA, PWMB); // 这里把速度发送给马达
-
 			Total_A_CNT += encoderA_cnt;
 			Total_B_CNT += encoderB_cnt;
+			Get_Encoder_countA = 0;
+			Get_Encoder_countB = 0;
+			LED_Flash(100,2);						// LED1闪烁
+			Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
+			PWMA = Velocity_A(-Target_A, encoderA_cnt);
+			PWMB = Velocity_B(-Target_B, encoderB_cnt);
+			Set_PWM(PWMA, PWMB);
 		}
 	}
 }
+
 
 // ADC中断服务函数
 void ADC_VOLTAGE_INST_IRQHandler(void)
@@ -317,21 +270,17 @@ void Kinematic_Analysis(float velocity, float turn)
 
 void CCD_Mode(void)
 {
+	if (Turn_Flag) {
 	static float Bias, Last_Bias;								  // 这里原来是static float!!
 	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
 	Last_Bias = Bias;											  // 保存上一次的偏差
 																  // printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
+	} else {
+		
+	}
 }
 
-// float CCD_Mode_return_turn(void)
-// {
-// 	static float Bias, Last_Bias; // 这里原来是static float!!
-// 	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
-// 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
-// 	Last_Bias = Bias; // 保存上一次的偏差
-// 	return Turn;
-// }
 
 void APP_Show(void)
 {
@@ -345,7 +294,7 @@ void APP_Show(void)
 	else
 	{
 		// sendToPc();
-		printf("{A%%d:%d:%d:%d:%f:%f:%f}$", CCD_Zhongzhi, encoderA_cnt, encoderB_cnt, Pitch, Roll, Yaw); // 打印到APP上面 显示波形
+		printf("{A%%d:%d:%d:%d}$", CCD_Zhongzhi, encoderA_cnt, encoderB_cnt, Pitch, Roll, Yaw); // 打印到APP上面 显示波形
 	}
 }
 
