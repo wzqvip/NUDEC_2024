@@ -62,9 +62,9 @@ float Angle_Balance, Gyro_Balance, Gyro_Turn; // 平衡倾角 平衡陀螺仪 转向陀螺仪
 float Acceleration_Z;
 int color = 1; // 1,2,3
 
-int Total_Turns = 0;
 int Total_A_CNT = 0;
 int Total_B_CNT = 0;
+int Total_Turns = 0;
 
 int Initial_Turn = 0;	// 初始角度为0.
 int Reverse_Turn = 180; // 返回角度
@@ -208,7 +208,7 @@ int main(void)
 		//        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
 
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
-		printf("%d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Total_A_CNT, Total_B_CNT, (int)Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
+		printf("%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag,Total_A_CNT, Total_B_CNT, Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
 	}
 }
 
@@ -231,9 +231,9 @@ void TIMER_0_INST_IRQHandler(void)
 			{
 				if (last_state == 0)
 				{
-					Total_Turns++;
 					LED_Blink(0, 100); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
 					last_state = 1;
+					Total_Turns++;
 				}
 				Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
 			}
