@@ -7,4 +7,5 @@ void LED_ON(int LED);
 void LED_OFF(int LED);
 void LED_Toggle(int LED);
 void LED_Flash(uint16_t time, int LED);
+void LED_Blink(int LED, int ms);
 #endif 
