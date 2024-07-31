@@ -48,6 +48,8 @@ float Angle_Balance, Gyro_Balance, Gyro_Turn; // 平衡倾角 平衡陀螺仪 转向陀螺仪
 float Acceleration_Z;
 int color = 1; // 1,2,3
 
+float Total_Turns = 0;
+
 int Initial_Turn = 0;	// 初始角度为0.
 int Reverse_Turn = 180; // 返回角度
 int Cross_Turn = 45;	// 对角线
@@ -59,7 +61,7 @@ extern uint16_t ADV[128];
 extern volatile bool gCheckADC;
 extern uint8_t PID_Send;
 int Motor_A, Motor_B, Target_A, Target_B; // 电机舵机控制相关
-float Velocity = 15, Turn = 0;
+float Velocity = 0, Turn = 0;
 uint8_t CCD_Zhongzhi;
 void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
@@ -72,8 +74,8 @@ int main(void)
 	int tslp = 0;
 	SYSCFG_DL_init();
 
-	// MPU6050_initialize();
-	// DMP_Init();
+	MPU6050_initialize();
+	DMP_Init();
 
 	DL_Timer_startCounter(PWM_0_INST);
 	NVIC_ClearPendingIRQ(UART_0_INST_INT_IRQN);
@@ -89,7 +91,9 @@ int main(void)
 	printf("Sys init done. Beep!\n");
 
 	// 开机叫一声
-	LED_Blink(0, 200);
+	LED_Blink(0, 100);
+
+	LED_ON(1);
 
 	// 从这里插入选择赛道的代码。
 	while (1)
@@ -103,14 +107,17 @@ int main(void)
 			{
 				cnt++;
 				delay_ms(100);
+				if (cnt > 10) {
+					LED_Blink(0, 100);
+				}
 			}
 			if (cnt > 10) // 如果是长按
 			{
-				LED_Blink(0, 1000);
+				LED_Blink(0, 200);
 				break; // GO
 				
 			} else {
-				LED_Blink(0, 200);
+				LED_Blink(0, 50);
 				track_num++;
 				if (track_num > 3) {
 					track_num = 0;
@@ -119,9 +126,13 @@ int main(void)
 			}
 		}
 	}
+	LED_ON(track_num+1);
+	Velocity = 15;
 
 	while (1)
 	{
+				delay_ms(25);
+		// printf("CCD\n");
 		// 这段是CCD的代码
 		DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN);
 		delay_us(5);										 // TSL_CLK=1;
@@ -159,15 +170,16 @@ int main(void)
 		CCD_Mode(); // CCD巡线PID
 		// 结束CCD
 
+		// printf("AGL\n");
 		// MPU6050获取角度的代码
-		// Get_Angle(1); // 6050
+		Get_Angle(2); // 6050
 		// 结束6050
 
 		// APP_Show();
 		//        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
-		delay_ms(25);
+
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
-		printf("%f,%f,%f,%d,%d,%d,%d,%d,%d,%d\n", Pitch, Roll, Yaw, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
+		printf("%f,%d,%d,%d,%d,%d,%d,%d\n", Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
 	}
 }
 
@@ -222,9 +234,11 @@ void Kinematic_Analysis(float velocity, float turn)
 
 void CCD_Mode(void)
 {
-	static float Bias, Last_Bias;
+	float Bias, Last_Bias; // 这里原来是static float!!
+	printf("BIAS: %f, %f \n", Bias, Last_Bias);
 	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
+	Total_Turns += Turn;
 	Turn = 0;
 	Last_Bias = Bias; // 保存上一次的偏差
 }

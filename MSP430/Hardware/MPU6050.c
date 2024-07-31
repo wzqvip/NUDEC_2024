@@ -681,7 +681,7 @@ void Read_DMP(void)
         Roll = atan2(2 * tmp[2] * tmp[3] + 2 * tmp[0] * tmp[1], -2 * tmp[1] * tmp[1] - 2 * tmp[2] * tmp[2] + 1) * 57.3;                     // ¼ÆËã³öºá¹ö½Ç
         Yaw = atan2(2 * (tmp[1] * tmp[2] + tmp[0] * tmp[3]), tmp[0] * tmp[0] + tmp[1] * tmp[1] - tmp[2] * tmp[2] - tmp[3] * tmp[3]) * 57.3; // yaw
 
-        printf("q0:%f, q1:%f, q2:%f, q3:%f, Pitch:%f, Roll:%f, Yaw:%f\n", tmp[0], tmp[1], tmp[2], tmp[3], Pitch, Roll, Yaw);
+        // printf("q0:%f, q1:%f, q2:%f, q3:%f, Pitch:%f, Roll:%f, Yaw:%f\n", tmp[0], tmp[1], tmp[2], tmp[3], Pitch, Roll, Yaw);
 
         // q0 = quat[0] / q30;
         // q1 = quat[1] / q30;
