@@ -40,6 +40,8 @@
 int Turn_Flag = 0;
 int last_state = 0;
 
+int Diff_Delta = 1300;
+
 void *__stack_chk_guard = (void *)0xdeadbeef;
 
 void __stack_chk_fail(void)
@@ -60,7 +62,7 @@ float Angle_Balance, Gyro_Balance, Gyro_Turn; // 平衡倾角 平衡陀螺仪 转向陀螺仪
 float Acceleration_Z;
 int color = 1; // 1,2,3
 
-float Total_Turns = 0;
+int Total_Turns = 0;
 int Total_A_CNT = 0;
 int Total_B_CNT = 0;
 
@@ -229,7 +231,6 @@ void TIMER_0_INST_IRQHandler(void)
 			{
 				if (last_state == 0)
 				{
-
 					Total_Turns++;
 					LED_Blink(0, 100); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
 					last_state = 1;
@@ -240,35 +241,35 @@ void TIMER_0_INST_IRQHandler(void)
 			{
 				if (last_state == 1)
 				{
-					if (Total_Turns == 0)
-					{
-						printf("First Loop;");
-						Target_A = Velocity;
-						Target_B = Velocity; ///第一部分走直线到达对面。
-					}
-					LED_Blink(0, 100);
+					LED_Blink(0, 100); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
 					last_state = 0;
 				}
-				if (Total_Turns == 1) { // 寻线一次之后
-				// 测量数据为1233差距， 调节两轮位置插到1100
-				if (ABS(Total_B_CNT) - ABS(Total_A_CNT) > 1300)
+
+				if (Total_Turns > 0)
 				{
-						Target_B = Velocity;
-					Target_A = Velocity * 1.1;
-				}
-				else if (ABS(Total_B_CNT) - ABS(Total_A_CNT) < 1100)
-				{
+					int Delta = Total_Turns * Diff_Delta;
+					// 右转向，因此这个时候的Acnt约等于Bcnt+Delta*Turn数量
+					if (ABS(encoderA_cnt) - ABS(encoderB_cnt) > Delta)
+					{
+						printf("1\n");
 						Target_A = Velocity;
-					Target_B = Velocity * 1.1;
+						Target_B = Velocity * 1.3;
+					}
+					else
+					{
+						printf("0\n");
+						Target_A = Velocity * 1.3;
+						Target_B = Velocity;
+					}
 				}
 				else
 				{
-						Target_A = Velocity;
+					Target_A = Velocity;
 					Target_B = Velocity;
-				} }
-			}
+				}
 
-			// 这一步之前的TargetA/B 就是小车两边轮子的目标速度。
+				// 这一步之前的TargetA/B 就是小车两边轮子的目标速度。
+			}
 
 			PWMA = Velocity_A(-Target_A, -encoderA_cnt); // 这边用来校准计数器。确保速度闭环
 			PWMB = Velocity_B(-Target_B, encoderB_cnt);
