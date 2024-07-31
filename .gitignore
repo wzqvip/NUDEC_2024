@@ -1,5 +1,5 @@
 # Prerequisites
-*.d
+
 
 # Object files
 *.o
@@ -17,12 +17,10 @@
 
 
 # Executables
-*.exe
 *.out
 *.app
 *.i*86
 *.x86_64
-*.hex
 
 # Debug files
 *.dSYM/
@@ -32,7 +30,6 @@
 
 # Kernel Module Compile Results
 *.mod*
-*.cmd
 .tmp_versions/
 modules.order
 Module.symvers
