@@ -35,3 +35,5 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+*.hex
+*.taco

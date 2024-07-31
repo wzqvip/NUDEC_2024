@@ -37,11 +37,6 @@
 #include "CCD.h"
 #include "stdlib.h"
 
-int Turn_Flag = 0;
-int last_state = 0;
-
-int Diff_Delta = 1300;
-
 void *__stack_chk_guard = (void *)0xdeadbeef;
 
 void __stack_chk_fail(void)
@@ -49,6 +44,11 @@ void __stack_chk_fail(void)
 	while (1)
 		printf("===================Stack smashing detected.=============\n");
 }
+
+int Turn_Flag = 0;
+int last_state__ = 0;
+
+int Diff_Delta = 1250;
 
 int track_num = 0;
 int DEBUG = 0;
@@ -82,8 +82,8 @@ uint8_t CCD_Zhongzhi;
 void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
 void CCD_Mode(void);
-float Velocity_KP = 0.037, Velocity_KI = 0.007; // 速度控制PID参数
-float calibrate_offset(float curr_velocity);
+float Velocity_KP = 0.05, Velocity_KI = 0.007; // 速度控制PID参数
+// float calibrate_offset(float curr_velocity);
 float offset = 0;
 
 int main(void)
@@ -92,8 +92,8 @@ int main(void)
 	int tslp = 0;
 	SYSCFG_DL_init();
 
-	MPU6050_initialize();
-	DMP_Init();
+	// MPU6050_initialize();
+	// DMP_Init();
 
 	DL_Timer_startCounter(PWM_0_INST);
 	NVIC_ClearPendingIRQ(UART_0_INST_INT_IRQN);
@@ -156,7 +156,10 @@ int main(void)
 		}
 	}
 	LED_ON(track_num + 1);
-	Velocity = 6;
+	Velocity = 8;
+
+	Total_Turns = 0;
+	last_state__ = 0;
 
 	while (1)
 	{
@@ -208,7 +211,9 @@ int main(void)
 		//        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
 
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
-		printf("%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag,Total_A_CNT, Total_B_CNT, Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
+
+		printf("%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag,last_state__,Total_A_CNT,Total_A_CNT,Target_A,Target_B,PWMA, PWMB,(int)Turn);
+		// printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
 	}
 }
 
@@ -221,46 +226,34 @@ void TIMER_0_INST_IRQHandler(void)
 		{
 			encoderA_cnt = Get_Encoder_countA;
 			encoderB_cnt = Get_Encoder_countB;
-			Total_A_CNT += Get_Encoder_countA;
-			Total_B_CNT += Get_Encoder_countB;
 			Get_Encoder_countA = 0;
 			Get_Encoder_countB = 0;
 			// LED_Flash(100, 2);					// LEDS闪烁
 
 			if (Turn_Flag == 1) // 寻
 			{
-				if (last_state == 0)
+				if (last_state__ == 0)
 				{
-					LED_Blink(0, 100); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
-					last_state = 1;
+					// LED_Blink(0, 50); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
+					last_state__ = 1;
 					Total_Turns++;
 				}
 				Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
 			}
 			else // 直线 Turn flag = 0;
 			{
-				if (last_state == 1)
+				if (last_state__ == 1)
 				{
-					LED_Blink(0, 100); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
-					last_state = 0;
+					// LED_Blink(0, 50); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
+					last_state__ = 0;
 				}
 
 				if (Total_Turns > 0)
 				{
 					int Delta = Total_Turns * Diff_Delta;
 					// 右转向，因此这个时候的Acnt约等于Bcnt+Delta*Turn数量
-					if (ABS(encoderA_cnt) - ABS(encoderB_cnt) > Delta)
-					{
-						printf("1\n");
-						Target_A = Velocity;
-						Target_B = Velocity * 1.3;
-					}
-					else
-					{
-						printf("0\n");
-						Target_A = Velocity * 1.3;
-						Target_B = Velocity;
-					}
+					int tt = (ABS(Total_A_CNT) - ABS(Total_B_CNT) - Delta) / 500;
+					Kinematic_Analysis(Velocity, -tt);
 				}
 				else
 				{
@@ -276,6 +269,9 @@ void TIMER_0_INST_IRQHandler(void)
 
 			// printf("%d %d %d %d %d %d %d %d %d %d\n",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP,Velocity_KI,Velocity);
 			Set_PWM(PWMA, PWMB); // 这里把速度发送给马达
+
+			Total_A_CNT += encoderA_cnt;
+			Total_B_CNT += encoderB_cnt;
 		}
 	}
 }
