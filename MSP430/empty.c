@@ -37,15 +37,15 @@
 #include "CCD.h"
 #include "stdlib.h"
 
-int Turn_Flag = 1;
+int Turn_Flag = 0;
 int last_state = 0;
 
 void *__stack_chk_guard = (void *)0xdeadbeef;
 
 void __stack_chk_fail(void)
 {
-	while(1)
-    printf("===================Stack smashing detected.=============\n");
+	while (1)
+		printf("===================Stack smashing detected.=============\n");
 }
 
 int track_num = 0;
@@ -123,39 +123,42 @@ int main(void)
 			{
 				cnt++;
 				delay_ms(100);
-				if (cnt > 10) {
+				if (cnt > 10)
+				{
 					LED_Blink(0, 100);
 				}
-				if (cnt > 30) {
+				if (cnt > 30)
+				{
 					LED_Blink(0, 1000);
 				}
 			}
-			if (cnt > 10 && cnt<30 ) // 如果是长按
+			if (cnt > 10 && cnt < 30) // 如果是长按
 			{
 				LED_Blink(0, 200);
 				break; // GO
-				
-			} 
+			}
 			// else if (cnt > 30) {
-				
+
 			// 	calibrate_offset(15);
 			// }
-			else {
+			else
+			{
 				LED_Blink(0, 50);
 				track_num++;
-				if (track_num > 3) {
+				if (track_num > 3)
+				{
 					track_num = 0;
 				}
-				LED_Blink(track_num+1, 200);
+				LED_Blink(track_num + 1, 200);
 			}
 		}
 	}
-	LED_ON(track_num+1);
+	LED_ON(track_num + 1);
 	Velocity = 6;
 
 	while (1)
 	{
-				delay_ms(25);
+		delay_ms(25);
 		// printf("CCD\n");
 		// 这段是CCD的代码
 		DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN);
@@ -207,64 +210,6 @@ int main(void)
 	}
 }
 
-float calibrate_offset(float curr_velocity){
-	float return_offset = 0;
-	int sample_num = 0;
-	while (DL_GPIO_readPins(EXTENAL_KEY_PORT, EXTENAL_KEY_BUTTON_PIN) != 0)
-	{
-		delay_ms(10);
-	}
-	while (Turn_Flag==1) {
-		delay_ms(25);
-		// printf("CCD\n");
-		// 这段是CCD的代码
-		DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN);
-		delay_us(5);										 // TSL_CLK=1;
-		DL_GPIO_clearPins(GPIO_SI_PORT, GPIO_SI_PIN_25_PIN); // TSL_SI=0;
-		delay_us(10);
-
-		DL_GPIO_clearPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN);
-		delay_us(5);									   // TSL_CLK=0;
-		DL_GPIO_setPins(GPIO_SI_PORT, GPIO_SI_PIN_25_PIN); // TSL_SI=1;
-		delay_us(30);
-
-		DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN);
-		delay_us(5);									   // TSL_CLK=1;
-		DL_GPIO_setPins(GPIO_SI_PORT, GPIO_SI_PIN_25_PIN); // TSL_SI=1;
-		delay_us(10);
-
-		DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN);
-		delay_us(5);										 // TSL_CLK=1;
-		DL_GPIO_clearPins(GPIO_SI_PORT, GPIO_SI_PIN_25_PIN); // TSL_SI=0;
-		delay_us(10);
-		DL_GPIO_clearPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN); // TSL_CLK=0;
-		delay_us(100);
-
-		for (int i = 0; i < 128; i++) // 读取128个像素点电压值
-		{
-			DL_GPIO_clearPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN); // TSL_CLK=0;
-			delay_us(100);										   // 调节曝光时间
-
-			ADV[i] = (adc_getValue()) >> 4; // 右移4位是/4操作，将数据范围从0-4096压缩到0-256方便数据处理
-
-			DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN); // TSL_CLK=1;
-		}
-		Find_CCD_Median();
-		CCD_Mode();
-		return_offset+=Turn;
-		sample_num++;
-		delay_us(100);
-	}
-	if (sample_num <= 10) {
-		printf("Sample number too small, please try again.\n");
-		return 0;
-	}
-	printf("The calibration offset is: %f\n", return_offset/sample_num);
-	return return_offset/sample_num;
-	
-}
-
-
 // 运动学使用这个地方的循环定时器来处理。
 void TIMER_0_INST_IRQHandler(void)
 {
@@ -280,19 +225,47 @@ void TIMER_0_INST_IRQHandler(void)
 			Get_Encoder_countB = 0;
 			// LED_Flash(100, 2);					// LEDS闪烁
 
-			if (Turn_Flag == 1) {
-				if (last_state == 0) {
+			if (Turn_Flag == 1) // 寻
+			{
+				if (last_state == 0)
+				{
+
+					Total_Turns++;
 					LED_Blink(0, 100); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
 					last_state = 1;
 				}
 				Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
-			} else {
-				if (last_state == 1) {
+			}
+			else // 直线 Turn flag = 0;
+			{
+				if (last_state == 1)
+				{
+					if (Total_Turns == 0)
+					{
+						printf("First Loop;");
+						Target_A = Velocity;
+						Target_B = Velocity; ///第一部分走直线到达对面。
+					}
 					LED_Blink(0, 100);
 					last_state = 0;
 				}
-					Target_A = Velocity;  
+				if (Total_Turns == 1) { // 寻线一次之后
+				// 测量数据为1233差距， 调节两轮位置插到1100
+				if (ABS(Total_B_CNT) - ABS(Total_A_CNT) > 1300)
+				{
+						Target_B = Velocity;
+					Target_A = Velocity * 1.1;
+				}
+				else if (ABS(Total_B_CNT) - ABS(Total_A_CNT) < 1100)
+				{
+						Target_A = Velocity;
+					Target_B = Velocity * 1.1;
+				}
+				else
+				{
+						Target_A = Velocity;
 					Target_B = Velocity;
+				} }
 			}
 
 			// 这一步之前的TargetA/B 就是小车两边轮子的目标速度。
@@ -301,7 +274,7 @@ void TIMER_0_INST_IRQHandler(void)
 			PWMB = Velocity_B(-Target_B, encoderB_cnt);
 
 			// printf("%d %d %d %d %d %d %d %d %d %d\n",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP,Velocity_KI,Velocity);
-			// Set_PWM(PWMA, PWMB); // 这里把速度发送给马达
+			Set_PWM(PWMA, PWMB); // 这里把速度发送给马达
 		}
 	}
 }
@@ -335,12 +308,11 @@ void Kinematic_Analysis(float velocity, float turn)
 
 void CCD_Mode(void)
 {
-	static float Bias, Last_Bias; // 这里原来是static float!!
+	static float Bias, Last_Bias;								  // 这里原来是static float!!
 	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
-	Total_Turns += Turn;
-	Last_Bias = Bias; // 保存上一次的偏差
-	// printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
+	Last_Bias = Bias;											  // 保存上一次的偏差
+																  // printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
 }
 
 // float CCD_Mode_return_turn(void)
@@ -431,10 +403,6 @@ void Get_Angle(uint8_t way)
 		Acceleration_Z = Accel_Z; // 更新Z轴加速度计
 	}
 }
-
-
-
-
 
 // /******************************************************************************
 // ***
@@ -575,4 +543,3 @@ void Get_Angle(uint8_t way)
 // 	else if (high_four == 15)
 // 		return ('F');
 // }
-
