@@ -159,6 +159,7 @@ GPIO13.$name                          = "EXTENAL_KEY";
 GPIO13.associatedPins[0].$name        = "BUTTON";
 GPIO13.associatedPins[0].assignedPort = "PORTB";
 GPIO13.associatedPins[0].assignedPin  = "5";
+GPIO13.associatedPins[0].direction    = "INPUT";
 
 PWM1.$name                      = "PWM_0";
 PWM1.timerStartTimer            = true;

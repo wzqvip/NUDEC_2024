@@ -43,10 +43,15 @@ int DEBUG_PWM = 0;
 // 6050
 void Get_Angle(uint8_t way);
 #define Pi 3.14159265
-uint8_t Way_Angle=2;                             //获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波 
+uint8_t Way_Angle=2;                        //获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波 
 float Angle_Balance,Gyro_Balance,Gyro_Turn; //平衡倾角 平衡陀螺仪 转向陀螺仪
 float Acceleration_Z;  
 int color = 1; // 1,2,3
+
+int Initial_Turn = 0;   // 初始角度为0.
+int Reverse_Turn = 180; // 返回角度
+int Cross_Turn   = 45;  // 对角线
+int Recross_Turn = 135; // 返回
 
 int32_t Get_Encoder_countA,encoderA_cnt,PWMA,Get_Encoder_countB,encoderB_cnt,PWMB;
 uint8_t Key_Num = 0;
@@ -82,18 +87,20 @@ int main(void)
 	NVIC_EnableIRQ(ADC_VOLTAGE_INST_INT_IRQN);
 	NVIC_EnableIRQ(TIMER_0_INST_INT_IRQN);
 
+	printf("Sys init done. Beep!\n");
+
 	// 开机叫一声
 	LED_ON(0);
-	delay_ms(100);
+	delay_ms(200);
 	LED_OFF(0);
-
+	delay_ms(200);
 
 	// 从这里插入选择赛道的代码。
 	while(1) {
-		if(click() == 3) {
-			LED_Toggle(1);
-			break;
-		}
+		printf("0");
+		uint8_t key_num = click();
+		delay_ms(200);
+		printf(".");
 	}
 
     while (1) 
