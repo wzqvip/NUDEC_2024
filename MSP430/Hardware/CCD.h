@@ -4,5 +4,5 @@
 unsigned int adc_getValue(void);
 
 void RD_TSL(void);
-void  Find_CCD_Median (void); 
+void Find_CCD_Median(void);
 #endif
