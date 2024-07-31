@@ -37,6 +37,9 @@
 #include "CCD.h"
 #include "stdlib.h"
 
+int Turn_Flag = 1;
+int last_state = 0;
+
 void *__stack_chk_guard = (void *)0xdeadbeef;
 
 void __stack_chk_fail(void)
@@ -76,6 +79,8 @@ void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
 void CCD_Mode(void);
 float Velocity_KP = 0.037, Velocity_KI = 0.007; // 速度控制PID参数
+
+float offset = 0;
 
 int main(void)
 {
@@ -192,6 +197,29 @@ int main(void)
 	}
 }
 
+float calibrate_offset(float curr_velocity){
+	float return_offset = 0;
+	int sample_num = 0;
+	while (DL_GPIO_readPins(EXTENAL_KEY_PORT, EXTENAL_KEY_BUTTON_PIN) != 0)
+	{
+		delay_ms(10);
+	}
+	while (Turn_Flag==1) {
+		Find_CCD_Median();
+		return_offset+=CCD_Mode_return_turn();
+		sample_num++;
+		delay_us(100);
+	}
+	if (sample_num <= 10) {
+		printf("Sample number too small, please try again.\n");
+		return 0;
+	}
+	printf("The calibration offset is: %f\n", return_offset/sample_num);
+	return return_offset/sample_num;
+	
+}
+
+
 // 运动学使用这个地方的循环定时器来处理。
 void TIMER_0_INST_IRQHandler(void)
 {
@@ -204,7 +232,22 @@ void TIMER_0_INST_IRQHandler(void)
 			Get_Encoder_countA = 0;
 			Get_Encoder_countB = 0;
 			// LED_Flash(100, 2);					// LEDS闪烁
-			Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
+
+			if (Turn_Flag == 1) {
+				if (last_state == 0) {
+					LED_Blink(0, 100); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
+					last_state = 1;
+				}
+				Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
+			} else {
+				if (last_state == 1) {
+					LED_Blink(0, 100);
+					last_state = 0;
+				}
+					Target_A = Velocity;
+					Target_B = Velocity;
+			}
+
 			PWMA = Velocity_A(-Target_A, -encoderA_cnt);
 			PWMB = Velocity_B(-Target_B, encoderB_cnt);
 
@@ -250,6 +293,17 @@ void CCD_Mode(void)
 	Turn = 0;
 	Last_Bias = Bias; // 保存上一次的偏差
 	printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
+}
+
+float CCD_Mode_return_turn(void)
+{
+	static float Bias, Last_Bias; // 这里原来是static float!!
+	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
+	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
+	Total_Turns += Turn;
+	Turn = 0;
+	Last_Bias = Bias; // 保存上一次的偏差
+	return Total_Turns;
 }
 
 void APP_Show(void)

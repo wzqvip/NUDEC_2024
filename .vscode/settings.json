@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "motor.h": "c",
-        "led.h": "c"
+        "led.h": "c",
+        "ccd.h": "c"
     }
 }

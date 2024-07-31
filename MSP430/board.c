@@ -2,9 +2,6 @@
 #include "stdio.h"
 #include "string.h"
 
-
-extern UART_Regs current_uart_port;
-
 #define RE_0_BUFF_LEN_MAX	128
 extern float Velocity,Turn;
 volatile uint8_t  recv0_buff[RE_0_BUFF_LEN_MAX] = {0};
