@@ -47,6 +47,14 @@ void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
 void CCD_Mode(void);
 float Velocity_KP = 0.037, Velocity_KI = 0.007; // 速度控制PID参数
+
+
+const int Delta = 1300;
+uint8_t Total_Turns = 0;
+bool is_Line = 0;
+bool last_state = 0;
+
+
 int main(void)
 {
 	int i = 0;
@@ -170,7 +178,7 @@ void APP_Show(void)
 	else
 	{
 		// printf("{A%%d:%d:%d:%d}$", CCD_Zhongzhi, encoderA_cnt, encoderB_cnt); // 打印到APP上面 显示波形
-			printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
+			printf("%d %d %d %d %d %d %d %d\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,(int)Velocity_KP*1000);
 
 	}
 }
