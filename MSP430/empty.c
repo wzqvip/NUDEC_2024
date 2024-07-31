@@ -40,7 +40,7 @@
 bool Turn_Flag = 0;
 // bool last_state__ = 0;
 
-int Diff_Delta = 1300;
+int Diff_Delta = 1250;
 int Total_A_CNT = 0;
 int Total_B_CNT = 0;
 int Delta_Target = 0;
