@@ -286,15 +286,17 @@ void TIMER_0_INST_IRQHandler(void)
 					LED_Blink(0, 100);
 					last_state = 0;
 				}
-					Target_A = Velocity;
+					Target_A = Velocity;  
 					Target_B = Velocity;
 			}
 
-			PWMA = Velocity_A(-Target_A, -encoderA_cnt);
+			// 这一步之前的TargetA/B 就是小车两边轮子的目标速度。
+
+			PWMA = Velocity_A(-Target_A, -encoderA_cnt); // 这边用来校准计数器。确保速度闭环
 			PWMB = Velocity_B(-Target_B, encoderB_cnt);
 
 			// printf("%d %d %d %d %d %d %d %d %d %d\n",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP,Velocity_KI,Velocity);
-			Set_PWM(PWMA, PWMB);
+			Set_PWM(PWMA, PWMB); // 这里把速度发送给马达
 		}
 	}
 }
@@ -332,7 +334,6 @@ void CCD_Mode(void)
 	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
 	Total_Turns += Turn;
-	Turn = 0;
 	Last_Bias = Bias; // 保存上一次的偏差
 	printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
 }
@@ -343,7 +344,6 @@ float CCD_Mode_return_turn(void)
 	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
 	Total_Turns += Turn;
-	Turn = 0;
 	Last_Bias = Bias; // 保存上一次的偏差
 	return Total_Turns;
 }
