@@ -5,11 +5,11 @@
 <h2>Tool Versions:</h2>
 IDE-Version: μVision V5.40.0.0
 Copyright (C) 2024 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: taco taco, shtu, LIC=TA39H-WVCEI-F1EPT-RQEM2-ZDPAI-SLK56
+License Information: taco taco, shtu, LIC=D0D7S-LH9HL-9UH4U-S3I3D-GY9ST-YWV3V
  
 Tool Versions:
-Toolchain:       MDK-ARM Professional  Version: 5.40.0.3
-Toolchain Path:  C:\Users\taco\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin
+Toolchain:       MDK-ARM Plus  Version: 5.40.0.3
+Toolchain Path:  C:\Users\WANGZ\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin
 C Compiler:      ArmClang.exe V6.22
 Assembler:       Armasm.exe V6.22
 Linker/Locator:  ArmLink.exe V6.22
@@ -21,22 +21,124 @@ Target DLL:      CMSIS_AGDI.dll V1.33.18.0
 Dialog DLL:      TARMCM1.DLL V1.14.6.0
  
 <h2>Project:</h2>
-C:\Users\taco\Documents\GitHub\NUDEC_2024\MSP430\keil\empty_LP_MSPM0G3507_nortos_keil.uvprojx
+C:\Users\WANGZ\Documents\GitHub\NUDEC_2024\MSP430\keil\empty_LP_MSPM0G3507_nortos_keil.uvprojx
 Project File Date:  07/31/2024
 
 <h2>Output:</h2>
-*** Using Compiler 'V6.22', folder: 'C:\Users\taco\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
-Build target 'MSPM0G3507_Project'
-Before Build - User command #1: cmd.exe /C "C:\Users\taco\Documents\GitHub\NUDEC_2024\MSP430\keil\../tools/keil/syscfg.bat 'C:\Users\taco\Documents\GitHub\NUDEC_2024\MSP430\keil\' empty.syscfg"
-Using Sysconfig Tool from "C:\ti\sysconfig_1.20.0\sysconfig_cli.bat"
-"Update the file located at <sdk path>/tools/keil/syscfg.bat to use a different version"
-"Couldn't find .metadata\product.json"
-Invalid argument '-s': File "C:\.metadata\product.json" does not exist
+*** Using Compiler 'V6.22', folder: 'C:\Users\WANGZ\AppData\Local\Keil_v5\ARM\ARMCLANG\Bin'
+Rebuild target 'MSPM0G3507_Project'
+Before Build - User command #1: cmd.exe /C "C:\Users\WANGZ\Documents\GitHub\NUDEC_2024\MSP430\keil\../tools/keil/syscfg.bat 'C:\Users\WANGZ\Documents\GitHub\NUDEC_2024\MSP430\keil\' empty.syscfg"
+Couldn't find Sysconfig Tool "C:\ti\sysconfig_1.20.0\sysconfig_cli.bat"
+"Update the file located at <sdk path>/tools/keil/syscfg.bat"
+compiling dl_mathacl.c...
+compiling dl_trng.c...
+../empty.c(139): error: call to undeclared function 'calibrate_offset'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  139 |                                 calibrate_offset(15);
+      |                                 ^
+../empty.c(208): error: conflicting types for 'calibrate_offset'
+  208 | float calibrate_offset(float curr_velocity){
+      |       ^
+../empty.c(139): note: previous implicit declaration is here
+  139 |                                 calibrate_offset(15);
+      |                                 ^
+../empty.c(251): error: call to undeclared function 'CCD_Mode_return_turn'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  251 |                 return_offset+=CCD_Mode_return_turn();
+      |                                ^
+../empty.c(340): error: conflicting types for 'CCD_Mode_return_turn'
+  340 | float CCD_Mode_return_turn(void)
+      |       ^
+../empty.c(251): note: previous implicit declaration is here
+  251 |                 return_offset+=CCD_Mode_return_turn();
+      |                                ^
+../empty.c(362): error: call to undeclared function 'sendToPc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  362 |                 sendToPc();
+      |                 ^
+../empty.c(447): error: conflicting types for 'sendToPc'
+  447 | void sendToPc(void)
+      |      ^
+../empty.c(362): note: previous implicit declaration is here
+  362 |                 sendToPc();
+      |                 ^
+../empty.c(450): error: call to undeclared function 'slove_data'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  450 |         slove_data();
+      |         ^
+../empty.c(455): error: call to undeclared function 'binToHex_high'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  455 |                 printf("%c", binToHex_high(SciBuf[i])); // <D2><D4><D7>址<FB><D0><CE>式<B7><A2><CB><U+0378><DF>4位<B6><D4>应<B5><C4>16<BD><F8><D6><C6>
+      |                              ^
+../empty.c(455): error: use of undeclared identifier 'SciBuf'
+  455 |                 printf("%c", binToHex_high(SciBuf[i])); // <D2><D4><D7>址<FB><D0><CE>式<B7><A2><CB><U+0378><DF>4位<B6><D4>应<B5><C4>16<BD><F8><D6><C6>
+      |                                            ^
+../empty.c(456): error: call to undeclared function 'binToHex_low'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  456 |                 printf("%c", binToHex_low(SciBuf[i]));  // <D2><D4><D7>址<FB><D0><CE>式<B7><A2><CB>偷<CD>?位<B6><D4>应<B5><C4>16<BD><F8><D6><C6>
+      |                              ^
+../empty.c(456): error: use of undeclared identifier 'SciBuf'
+  456 |                 printf("%c", binToHex_low(SciBuf[i]));  // <D2><D4><D7>址<FB><D0><CE>式<B7><A2><CB>偷<CD>?位<B6><D4>应<B5><C4>16<BD><F8><D6><C6>
+      |                                           ^
+../empty.c(462): error: conflicting types for 'slove_data'
+  462 | void slove_data(void)
+      |      ^
+../empty.c(450): note: previous implicit declaration is here
+  450 |         slove_data();
+      |         ^
+../empty.c(465): error: use of undeclared identifier 'SciBuf'
+  465 |         SciBuf[0] = 0;
+      |         ^
+../empty.c(466): error: use of undeclared identifier 'SciBuf'
+  466 |         SciBuf[1] = 132;
+      |         ^
+../empty.c(467): error: use of undeclared identifier 'SciBuf'
+  467 |         SciBuf[2] = 0;
+      |         ^
+../empty.c(468): error: use of undeclared identifier 'SciBuf'
+  468 |         SciBuf[3] = 0;
+      |         ^
+../empty.c(469): error: use of undeclared identifier 'SciBuf'
+  469 |         SciBuf[4] = 0;
+      |         ^
+../empty.c(470): error: use of undeclared identifier 'SciBuf'
+  470 |         SciBuf[5] = 0;
+      |         ^
+../empty.c(472): error: use of undeclared identifier 'SciBuf'
+  472 |                 SciBuf[6 + i] = ADV[i];
+      |                 ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
 compiling empty.c...
-linking...
-Program Size: Code=24288 RO-data=3928 RW-data=72 ZI-data=1184  
-FromELF: creating hex file...
-".\Objects\empty_LP_MSPM0G3507_nortos_keil.axf" - 0 Error(s), 0 Warning(s).
+compiling ti_msp_dl_config.c...
+compiling dl_uart.c...
+compiling dl_vref.c...
+compiling dl_lfss.c...
+compiling board.c...
+compiling dl_lcd.c...
+compiling dl_opa.c...
+compiling dl_spi.c...
+compiling dl_rtc_common.c...
+compiling dl_keystorectl.c...
+assembling startup_mspm0g350x_uvision.s...
+compiling dl_timer.c...
+compiling dl_i2c.c...
+compiling dl_mcan.c...
+compiling dl_crcp.c...
+compiling dl_dac12.c...
+compiling dl_common.c...
+compiling dl_dma.c...
+compiling dl_interrupt.c...
+compiling dl_crc.c...
+compiling dl_aesadv.c...
+compiling dl_adc12.c...
+compiling filter.c...
+compiling dl_aes.c...
+compiling encoder.c...
+compiling dl_flashctl.c...
+compiling motor.c...
+compiling led.c...
+compiling key.c...
+compiling CCD.c...
+compiling IOI2C.c...
+compiling inv_mpu_dmp_motion_driver.c...
+compiling MPU6050.c...
+compiling inv_mpu.c...
+".\Objects\empty_LP_MSPM0G3507_nortos_keil.axf" - 19 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -48,7 +150,8 @@ Package Vendor: TexasInstruments
 <h2>Collection of Component include folders:</h2>
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Target not created.
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
