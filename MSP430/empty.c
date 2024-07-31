@@ -212,7 +212,7 @@ int main(void)
 
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
 
-		printf("%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag,last_state__,Total_A_CNT,Total_A_CNT,Target_A,Target_B,PWMA, PWMB,(int)Turn);
+		// printf("%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag,last_state__,Total_A_CNT,Total_A_CNT,Target_A,Target_B,PWMA, PWMB,(int)Turn);
 		// printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
 	}
 }
@@ -234,6 +234,7 @@ void TIMER_0_INST_IRQHandler(void)
 			{
 				if (last_state__ == 0)
 				{
+					printf("巡线!\n");
 					// LED_Blink(0, 50); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
 					last_state__ = 1;
 					Total_Turns++;
@@ -244,22 +245,29 @@ void TIMER_0_INST_IRQHandler(void)
 			{
 				if (last_state__ == 1)
 				{
+					printf("直线!\n");
 					// LED_Blink(0, 50); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
 					last_state__ = 0;
 				}
 
 				if (Total_Turns > 0)
 				{
-					int Delta = Total_Turns * Diff_Delta;
-					// 右转向，因此这个时候的Acnt约等于Bcnt+Delta*Turn数量
-					int tt = (ABS(Total_A_CNT) - ABS(Total_B_CNT) - Delta) / 500;
-					Kinematic_Analysis(Velocity, -tt);
-				}
-				else
-				{
-					Target_A = Velocity;
-					Target_B = Velocity;
-				}
+					if (ABS(Total_A_CNT) - ABS(Total_B_CNT) > Diff_Delta + 100) {
+						// A 走多了
+						printf("A 走多了\n");
+						Target_A = Velocity - 1;
+						Target_B = Velocity + 1;
+					}
+					else if (ABS(Total_A_CNT) - ABS(Total_B_CNT) < Diff_Delta - 100) {
+						// B 走多了
+						printf("B 走多了\n");
+						Target_A = Velocity + 1;
+						Target_B = Velocity - 1;
+					}
+					else {
+						Target_A = Velocity;
+						Target_B = Velocity;
+					}
 
 				// 这一步之前的TargetA/B 就是小车两边轮子的目标速度。
 			}
