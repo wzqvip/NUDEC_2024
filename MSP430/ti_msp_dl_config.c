@@ -153,9 +153,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(LEDS_LED_B_IOMUX);
 
-    DL_GPIO_initDigitalInput(KEYS_KEY_R_IOMUX);
-
-    DL_GPIO_initDigitalInput(KEYS_KEY_L_IOMUX);
+    DL_GPIO_initDigitalInput(KEYR_KEY_R_IOMUX);
 
     DL_GPIO_initDigitalInput(ENCODERA_E1A_IOMUX);
 
@@ -168,6 +166,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initDigitalOutput(I2C_SCL_IOMUX);
 
     DL_GPIO_initDigitalOutput(I2C_SDA_IOMUX);
+
+    DL_GPIO_initDigitalInput(KEYL_KEY_L_IOMUX);
 
     DL_GPIO_clearPins(GPIOA, AIN1_PIN_12_PIN |
 		AIN2_PIN_13_PIN |

@@ -9,23 +9,23 @@
 uint8_t click(void)
 {
 	uint8_t key_num=0; 
-	if(DL_GPIO_readPins(KEYS_KEY_R_PORT,KEYS_KEY_R_PIN)==0)
-	{
-		delay_ms(50);
-		while(DL_GPIO_readPins(KEYS_KEY_R_PORT,KEYS_KEY_R_PIN)==0);
-		delay_ms(50);
-		key_num=1; //ÓÒ²à°´Å¥
-		printf("KeyR\n");
-	}
-	else if(DL_GPIO_readPins(KEYS_KEY_L_PORT,KEYS_KEY_L_PIN)==0)
-	{
-		delay_ms(50);
-		while(DL_GPIO_readPins(KEYS_KEY_L_PORT,KEYS_KEY_L_PIN)==0);
-		delay_ms(50);
-		key_num=2; // ×ó²à°´Å¥
-		printf("KeyL\n");
-	}
-	else if(DL_GPIO_readPins(EXTENAL_KEY_PORT,EXTENAL_KEY_BUTTON_PIN)==0)
+	// if(DL_GPIO_readPins(KEYR_PORT,KEYR_KEY_R_PIN)==0)
+	// {
+	// 	delay_ms(50);
+	// 	while(DL_GPIO_readPins(KEYR_PORT,KEYR_KEY_R_PIN)==0);
+	// 	delay_ms(50);
+	// 	key_num=1; //ÓÒ²à°´Å¥
+	// 	printf("KeyR\n");
+	// }
+	// if(DL_GPIO_readPins(KEYL_PORT,KEYL_KEY_L_PIN)==0)
+	// {
+	// 	delay_ms(50);
+	// 	while(DL_GPIO_readPins(KEYL_PORT,KEYL_KEY_L_PIN)==0);
+	// 	delay_ms(50);
+	// 	key_num=2; // ×ó²à°´Å¥
+	// 	printf("KeyL\n");
+	// }
+	if(DL_GPIO_readPins(EXTENAL_KEY_PORT,EXTENAL_KEY_BUTTON_PIN)==0)
 	{
 		delay_ms(50);
 		while(DL_GPIO_readPins(EXTENAL_KEY_PORT,EXTENAL_KEY_BUTTON_PIN)==0);

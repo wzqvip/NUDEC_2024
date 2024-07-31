@@ -212,14 +212,12 @@ extern "C" {
 /* Defines for LED_B: GPIOB.22 with pinCMx 50 on package pin 21 */
 #define LEDS_LED_B_PIN                                          (DL_GPIO_PIN_22)
 #define LEDS_LED_B_IOMUX                                         (IOMUX_PINCM50)
+/* Port definition for Pin Group KEYR */
+#define KEYR_PORT                                                        (GPIOB)
+
 /* Defines for KEY_R: GPIOB.21 with pinCMx 49 on package pin 20 */
-#define KEYS_KEY_R_PORT                                                  (GPIOB)
-#define KEYS_KEY_R_PIN                                          (DL_GPIO_PIN_21)
-#define KEYS_KEY_R_IOMUX                                         (IOMUX_PINCM49)
-/* Defines for KEY_L: GPIOA.18 with pinCMx 40 on package pin 11 */
-#define KEYS_KEY_L_PORT                                                  (GPIOA)
-#define KEYS_KEY_L_PIN                                          (DL_GPIO_PIN_18)
-#define KEYS_KEY_L_IOMUX                                         (IOMUX_PINCM40)
+#define KEYR_KEY_R_PIN                                          (DL_GPIO_PIN_21)
+#define KEYR_KEY_R_IOMUX                                         (IOMUX_PINCM49)
 /* Port definition for Pin Group ENCODERA */
 #define ENCODERA_PORT                                                    (GPIOA)
 
@@ -255,6 +253,12 @@ extern "C" {
 /* Defines for SDA: GPIOA.1 with pinCMx 2 on package pin 34 */
 #define I2C_SDA_PIN                                              (DL_GPIO_PIN_1)
 #define I2C_SDA_IOMUX                                             (IOMUX_PINCM2)
+/* Port definition for Pin Group KEYL */
+#define KEYL_PORT                                                        (GPIOA)
+
+/* Defines for KEY_L: GPIOA.18 with pinCMx 40 on package pin 11 */
+#define KEYL_KEY_L_PIN                                          (DL_GPIO_PIN_18)
+#define KEYL_KEY_L_IOMUX                                         (IOMUX_PINCM40)
 
 
 
