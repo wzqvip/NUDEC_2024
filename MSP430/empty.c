@@ -181,14 +181,14 @@ int main(void)
 
 		// printf("AGL\n");
 		// MPU6050获取角度的代码
-		Get_Angle(2); // 6050
+		// Get_Angle(1); // 6050
 		// 结束6050
 
 		// APP_Show();
 		//        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
 
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
-		printf("%f,%d,%d,%d,%d,%d,%d,%d\n", Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
+		printf("%d,%d,%d,%d,%d,%d,%d,%d\n", (int)Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
 	}
 }
 
@@ -243,13 +243,13 @@ void Kinematic_Analysis(float velocity, float turn)
 
 void CCD_Mode(void)
 {
-	float Bias, Last_Bias; // 这里原来是static float!!
-	printf("BIAS: %f, %f \n", Bias, Last_Bias);
+	static float Bias, Last_Bias; // 这里原来是static float!!
 	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
 	Total_Turns += Turn;
 	Turn = 0;
 	Last_Bias = Bias; // 保存上一次的偏差
+	printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
 }
 
 void APP_Show(void)
