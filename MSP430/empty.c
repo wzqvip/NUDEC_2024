@@ -45,14 +45,13 @@ void __stack_chk_fail(void)
 		printf("===================Stack smashing detected.=============\n");
 }
 
-int Turn_Flag = 0;
-int last_state__ = 0;
+bool Turn_Flag = 0;
+bool last_state__ = 0;
 
-int Diff_Delta = 1250;
+int Diff_Delta = 1300;
 
-int track_num = 0;
-int DEBUG = 0;
-int DEBUG_PWM = 0;
+uint8_t track_num = 0;
+
 
 // 6050
 void Get_Angle(uint8_t way);
@@ -64,12 +63,7 @@ int color = 1; // 1,2,3
 
 int Total_A_CNT = 0;
 int Total_B_CNT = 0;
-int Total_Turns = 0;
-
-int Initial_Turn = 0;	// 初始角度为0.
-int Reverse_Turn = 180; // 返回角度
-int Cross_Turn = 45;	// 对角线
-int Recross_Turn = 135; // 返回
+int Delta_Target = 0;
 
 int32_t Get_Encoder_countA, encoderA_cnt, PWMA, Get_Encoder_countB, encoderB_cnt, PWMB;
 uint8_t Key_Num = 0;
@@ -82,9 +76,10 @@ uint8_t CCD_Zhongzhi;
 void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
 void CCD_Mode(void);
-float Velocity_KP = 0.05, Velocity_KI = 0.007; // 速度控制PID参数
+float Velocity_KP = 0.047, Velocity_KI = 0.007; // 速度控制PID参数
 // float calibrate_offset(float curr_velocity);
 float offset = 0;
+uint8_t Total_turns = 0;
 
 int main(void)
 {
@@ -158,7 +153,6 @@ int main(void)
 	LED_ON(track_num + 1);
 	Velocity = 8;
 
-	Total_Turns = 0;
 	last_state__ = 0;
 
 	while (1)
@@ -212,8 +206,8 @@ int main(void)
 
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
 
-		// printf("%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag,last_state__,Total_A_CNT,Total_A_CNT,Target_A,Target_B,PWMA, PWMB,(int)Turn);
-		// printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
+		printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target,Total_turns);
+		// printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
 	}
 }
 
@@ -228,16 +222,16 @@ void TIMER_0_INST_IRQHandler(void)
 			encoderB_cnt = Get_Encoder_countB;
 			Get_Encoder_countA = 0;
 			Get_Encoder_countB = 0;
-			// LED_Flash(100, 2);					// LEDS闪烁
+			LED_Flash(100, 2);					// LEDS闪烁
 
 			if (Turn_Flag == 1) // 寻
 			{
 				if (last_state__ == 0)
 				{
-					printf("巡线!\n");
+					// printf("L\n");
 					// LED_Blink(0, 50); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
 					last_state__ = 1;
-					Total_Turns++;
+					Total_turns+=1;
 				}
 				Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
 			}
@@ -245,29 +239,39 @@ void TIMER_0_INST_IRQHandler(void)
 			{
 				if (last_state__ == 1)
 				{
-					printf("直线!\n");
+					// printf("S\n");
 					// LED_Blink(0, 50); // FIXME: 蜂鸣器。DEBUG用，到时候删掉。 100ms可能会有轻微影响。
 					last_state__ = 0;
 				}
 
-				if (Total_Turns > 0)
-				{
-					if (ABS(Total_A_CNT) - ABS(Total_B_CNT) > Diff_Delta + 100) {
+				if (Total_turns > 0)
+				{ // 注意B是负数。
+					Delta_Target = Diff_Delta * Total_turns;
+					if ((Total_A_CNT + Total_B_CNT) > Delta_Target)
+					{
 						// A 走多了
-						printf("A 走多了\n");
+						// printf("A\n");
 						Target_A = Velocity - 1;
-						Target_B = Velocity + 1;
+						Target_B = Velocity + 2;
 					}
-					else if (ABS(Total_A_CNT) - ABS(Total_B_CNT) < Diff_Delta - 100) {
+					else if ((Total_A_CNT + Total_B_CNT) < Delta_Target)
+					{
 						// B 走多了
-						printf("B 走多了\n");
-						Target_A = Velocity + 1;
+						// printf("B\n");
+						Target_A = Velocity + 2;
 						Target_B = Velocity - 1;
 					}
-					else {
+					else
+					{
 						Target_A = Velocity;
 						Target_B = Velocity;
 					}
+				}
+				else
+				{
+					Target_A = Velocity;
+					Target_B = Velocity;
+				}
 
 				// 这一步之前的TargetA/B 就是小车两边轮子的目标速度。
 			}
@@ -307,8 +311,8 @@ void ADC_VOLTAGE_INST_IRQHandler(void)
 void Kinematic_Analysis(float velocity, float turn)
 {
 
-	Target_A = (velocity + turn);
-	Target_B = (velocity - turn); // 后轮差速
+	Target_A = (velocity + turn * 1.3);
+	Target_B = (velocity - turn * 1.3); // 后轮差速
 }
 
 void CCD_Mode(void)

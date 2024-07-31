@@ -6,7 +6,7 @@
 
 CCD模块：CLK接PB23、SI接PA25、AO接PA27
 
-蓝牙串口：PB6(模块RX) PB7(模块RX)
+蓝牙串口：PB6(模块RX) PB7(模块TX)
 
 LED灯： R,G,B: PB26 PB27 PB22
 
