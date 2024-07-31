@@ -35,6 +35,15 @@
 #include "led.h"
 #include "motor.h"
 #include "CCD.h"
+#include "stdlib.h"
+
+void *__stack_chk_guard = (void *)0xdeadbeef;
+
+void __stack_chk_fail(void)
+{
+	while(1)
+    printf("===================Stack smashing detected.=============\n");
+}
 
 int track_num = 0;
 int DEBUG = 0;
