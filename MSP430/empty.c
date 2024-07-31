@@ -37,25 +37,15 @@
 #include "CCD.h"
 #include "stdlib.h"
 
-void *__stack_chk_guard = (void *)0xdeadbeef;
-
-void __stack_chk_fail(void)
-{
-	while (1)
-		printf("===================Stack smashing detected.=============\n");
-}
-
 bool Turn_Flag = 0;
-bool last_state__ = 0;
-
+// bool last_state__ = 0;
 
 int Diff_Delta = 1300;
 int Total_A_CNT = 0;
 int Total_B_CNT = 0;
 int Delta_Target = 0;
-
+int Total_turns = 0;
 uint8_t track_num = 0;
-
 
 // 6050
 void Get_Angle(uint8_t way);
@@ -64,8 +54,6 @@ uint8_t Way_Angle = 2;						  // 获取角度的算法，1：四元数  2：卡尔曼  3：互补滤
 float Angle_Balance, Gyro_Balance, Gyro_Turn; // 平衡倾角 平衡陀螺仪 转向陀螺仪
 float Acceleration_Z;
 int color = 1; // 1,2,3
-
-
 
 int32_t Get_Encoder_countA, encoderA_cnt, PWMA, Get_Encoder_countB, encoderB_cnt, PWMB;
 uint8_t Key_Num = 0;
@@ -81,12 +69,12 @@ void CCD_Mode(void);
 float Velocity_KP = 0.047, Velocity_KI = 0.007; // 速度控制PID参数
 // float calibrate_offset(float curr_velocity);
 float offset = 0;
-uint8_t Total_turns = 0;
 
 int main(void)
 {
 	int i = 0;
 	int tslp = 0;
+	static int last_state__ = 0;
 	SYSCFG_DL_init();
 
 	// MPU6050_initialize();
@@ -126,20 +114,12 @@ int main(void)
 				{
 					LED_Blink(0, 100);
 				}
-				if (cnt > 30)
-				{
-					LED_Blink(0, 1000);
-				}
 			}
-			if (cnt > 10 && cnt < 30) // 如果是长按
+			if (cnt > 10) // 如果是长按
 			{
 				LED_Blink(0, 200);
 				break; // GO
 			}
-			// else if (cnt > 30) {
-
-			// 	calibrate_offset(15);
-			// }
 			else
 			{
 				LED_Blink(0, 50);
@@ -154,8 +134,6 @@ int main(void)
 	}
 	LED_ON(track_num + 1);
 	Velocity = 8;
-
-	last_state__ = 0;
 
 	while (1)
 	{
@@ -195,13 +173,54 @@ int main(void)
 			delay_us(20);
 		}
 		Find_CCD_Median();
-		CCD_Mode(); // CCD巡线PID
-		// 结束CCD
 
-		if (Turn_Flag == 1) {
-			if (last_state__ == 0) {
+		if (Turn_Flag == 1)
+		{ // 巡线模式
+			if (last_state__ == 0)
+			{
+				last_state__ = 1;
+				// LED_Blink(0, 10);
+				Total_turns++;
 			}
 		}
+		else
+		{ // 直线模式。
+			if (last_state__ == 1)
+			{
+				last_state__ = 0;
+				// LED_Blink(0, 10);
+			}
+		}
+
+		// CCD_Mode(); // CCD巡线PID
+
+		if (Turn_Flag)
+		{
+			static float Bias, Last_Bias;								  // 这里原来是static float!!
+			Bias = CCD_Zhongzhi - 64;									  // 提取偏差
+			Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
+			Last_Bias = Bias;											  // 保存上一次的偏差
+																		  // printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
+		}
+		else
+		{
+			Delta_Target = Total_turns * Diff_Delta;
+			// A 是负的，走的多。
+			if (Total_A_CNT + Total_B_CNT < -Delta_Target - 100)
+			{
+				Turn = -1;
+			}
+			else if (Total_B_CNT + Total_B_CNT > Delta_Target + 100)
+			{
+				Turn = 1;
+			}
+			else
+			{
+				Turn = 0;
+			}
+		}
+
+		// 结束CCD
 
 		// printf("AGL\n");
 		// MPU6050获取角度的代码
@@ -213,8 +232,8 @@ int main(void)
 
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
 
-		printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target,Total_turns);
-		// printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
+		// printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
+		printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
 	}
 }
 
@@ -231,15 +250,14 @@ void TIMER_0_INST_IRQHandler(void)
 			Total_B_CNT += encoderB_cnt;
 			Get_Encoder_countA = 0;
 			Get_Encoder_countB = 0;
-			LED_Flash(100,2);						// LED1闪烁
+			LED_Flash(100, 2);					// LED1闪烁
 			Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
 			PWMA = Velocity_A(-Target_A, encoderA_cnt);
-			PWMB = Velocity_B(-Target_B, encoderB_cnt);
+			PWMB = Velocity_B(-Target_B, -encoderB_cnt);
 			Set_PWM(PWMA, PWMB);
 		}
 	}
 }
-
 
 // ADC中断服务函数
 void ADC_VOLTAGE_INST_IRQHandler(void)
@@ -270,17 +288,7 @@ void Kinematic_Analysis(float velocity, float turn)
 
 void CCD_Mode(void)
 {
-	if (Turn_Flag) {
-	static float Bias, Last_Bias;								  // 这里原来是static float!!
-	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
-	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
-	Last_Bias = Bias;											  // 保存上一次的偏差
-																  // printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
-	} else {
-		
-	}
 }
-
 
 void APP_Show(void)
 {
