@@ -61,6 +61,8 @@ float Acceleration_Z;
 int color = 1; // 1,2,3
 
 float Total_Turns = 0;
+int Total_A_CNT = 0;
+int Total_B_CNT = 0;
 
 int Initial_Turn = 0;	// 初始角度为0.
 int Reverse_Turn = 180; // 返回角度
@@ -79,7 +81,7 @@ void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
 void CCD_Mode(void);
 float Velocity_KP = 0.037, Velocity_KI = 0.007; // 速度控制PID参数
-
+float calibrate_offset(float curr_velocity);
 float offset = 0;
 
 int main(void)
@@ -134,10 +136,10 @@ int main(void)
 				break; // GO
 				
 			} 
-			else if (cnt > 30) {
+			// else if (cnt > 30) {
 				
-				calibrate_offset(15);
-			}
+			// 	calibrate_offset(15);
+			// }
 			else {
 				LED_Blink(0, 50);
 				track_num++;
@@ -149,7 +151,7 @@ int main(void)
 		}
 	}
 	LED_ON(track_num+1);
-	Velocity = 8;
+	Velocity = 6;
 
 	while (1)
 	{
@@ -201,7 +203,7 @@ int main(void)
 		//        printf("%d %d %d %d %d %d %d %f\n\r",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP);
 
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
-		printf("%d,%d,%d,%d,%d,%d,%d,%d\n", (int)Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
+		printf("%d, %d, %d,%d,%d,%d,%d,%d,%d,%d\n", Total_A_CNT, Total_B_CNT, (int)Total_Turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB);
 	}
 }
 
@@ -272,6 +274,8 @@ void TIMER_0_INST_IRQHandler(void)
 		{
 			encoderA_cnt = Get_Encoder_countA;
 			encoderB_cnt = Get_Encoder_countB;
+			Total_A_CNT += Get_Encoder_countA;
+			Total_B_CNT += Get_Encoder_countB;
 			Get_Encoder_countA = 0;
 			Get_Encoder_countB = 0;
 			// LED_Flash(100, 2);					// LEDS闪烁
@@ -297,7 +301,7 @@ void TIMER_0_INST_IRQHandler(void)
 			PWMB = Velocity_B(-Target_B, encoderB_cnt);
 
 			// printf("%d %d %d %d %d %d %d %d %d %d\n",CCD_Zhongzhi,Target_A,encoderA_cnt,PWMA,Target_B,encoderB_cnt,PWMB,Velocity_KP,Velocity_KI,Velocity);
-			Set_PWM(PWMA, PWMB); // 这里把速度发送给马达
+			// Set_PWM(PWMA, PWMB); // 这里把速度发送给马达
 		}
 	}
 }
@@ -336,7 +340,7 @@ void CCD_Mode(void)
 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
 	Total_Turns += Turn;
 	Last_Bias = Bias; // 保存上一次的偏差
-	printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
+	// printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
 }
 
 // float CCD_Mode_return_turn(void)
