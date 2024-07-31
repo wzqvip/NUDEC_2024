@@ -282,7 +282,7 @@
     ],
 
     "components": {
-        // "LEDS_RED": {
+        // "LED1_RED": {
         //     "displayName": "LaunchPad LED 1 Red",
         //     "definition": "/ti/boards/components/led.json",
         //     "connections": {
@@ -313,15 +313,15 @@
 
         // /* symbolic links/aliases for LED portability between LaunchPads */
         // "LED": {
-        //     "link" : "LEDS_RED"
+        //     "link" : "LED1_RED"
         // },
         // "LED_DIMMABLE": {
         //     "link" : "LED2_RED"
         // },
         // "LED0": {
-        //     "link": "LEDS_RED"
+        //     "link": "LED1_RED"
         // },
-        // "LEDS": {
+        // "LED1": {
         //     "link": "LED2_RED"
         // },
         // "LED2": {
@@ -331,9 +331,9 @@
         //     "link": "LED2_BLUE"
         // },
         // "LED0_PWM" : {
-        //     "link" : "LEDS"
+        //     "link" : "LED1"
         // },
-        // "LEDS_PWM" : {
+        // "LED1_PWM" : {
         //     "link" : "LED2"
         // },
         // "LED2_PWM" : {

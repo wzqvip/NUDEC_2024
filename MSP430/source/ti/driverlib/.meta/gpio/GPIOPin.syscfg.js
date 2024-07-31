@@ -57,10 +57,10 @@ function determineInvalidOptions(inst){
 
 const LPInfo = [
     {
-        name: "LEDSEn",
-        displayName: "Launchpad LEDS",
-        description: "Shortcut to enable LEDS on PA.0 of the LaunchPad",
-        longDescription: "Shortcut to enable LEDS on PA.0 of the LaunchPad",
+        name: "LED1En",
+        displayName: "Launchpad LED1",
+        description: "Shortcut to enable LED1 on PA.0 of the LaunchPad",
+        longDescription: "Shortcut to enable LED1 on PA.0 of the LaunchPad",
         direction: "OUTPUT",
         assignedPort: "PORTA",
         assignedPortSegment: "Lower",

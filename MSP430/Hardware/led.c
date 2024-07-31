@@ -1,60 +1,42 @@
 #include "led.h"
+/***********************************************
+公司：轮趣科技（东莞）有限公司
+品牌：WHEELTEC
+官网：wheeltec.net
+淘宝店铺：shop114407458.taobao.com 
+速卖通: https://minibalance.aliexpress.com/store/4455017
+版本：V1.0
+修改时间：2024-07-019
 
-/*
-LED0 蜂鸣器
-LED1 红色
-LED2 绿色
-LED3 蓝色
-*/
+Brand: WHEELTEC
+Website: wheeltec.net
+Taobao shop: shop114407458.taobao.com 
+Aliexpress: https://minibalance.aliexpress.com/store/4455017
+Version: V1.0
+Update：2024-07-019
 
-void LED_ON(int LED)
+All rights reserved
+***********************************************/
+void LED_ON(void)
 {
-	if (LED == 0)
-		DL_GPIO_setPins(BEEPER_PORT, BEEPER_BEEP_PIN);
-	if (LED == 1)
-		DL_GPIO_setPins(LEDS_PORT, LEDS_LED_R_PIN);
-	else if (LED == 2)
-		DL_GPIO_setPins(LEDS_PORT, LEDS_LED_G_PIN);
-	else if (LED == 3)
-		DL_GPIO_setPins(LEDS_PORT, LEDS_LED_B_PIN);
+	DL_GPIO_clearPins(LED1_PORT,LED1_PIN_0_PIN);
 }
 
-void LED_OFF(int LED)
+void LED_OFF(void)
 {
-	if (LED == 0)
-		DL_GPIO_clearPins(BEEPER_PORT, BEEPER_BEEP_PIN);
-	if (LED == 1)
-		DL_GPIO_clearPins(LEDS_PORT, LEDS_LED_R_PIN);
-	else if (LED == 2)
-		DL_GPIO_clearPins(LEDS_PORT, LEDS_LED_G_PIN);
-	else if (LED == 3)
-		DL_GPIO_clearPins(LEDS_PORT, LEDS_LED_B_PIN);
+	DL_GPIO_setPins(LED1_PORT,LED1_PIN_0_PIN);
 }
 
-void LED_Blink(int LED, int ms)
+void LED_Toggle(void)
 {
-	LED_ON(LED);
-	delay_ms(ms);
-	LED_OFF(LED);
+	DL_GPIO_togglePins(LED1_PORT,LED1_PIN_0_PIN);
 }
 
-void LED_Toggle(int LED)
-{
-	if (LED == 0)
-		DL_GPIO_togglePins(BEEPER_PORT, BEEPER_BEEP_PIN);
-	if (LED == 1)
-		DL_GPIO_togglePins(LEDS_PORT, LEDS_LED_R_PIN);
-	else if (LED == 2)
-		DL_GPIO_togglePins(LEDS_PORT, LEDS_LED_G_PIN);
-	else if (LED == 3)
-		DL_GPIO_togglePins(LEDS_PORT, LEDS_LED_B_PIN);
-}
-
-void LED_Flash(uint16_t time, int LED)
+void LED_Flash(uint16_t time)
 {
 	static uint16_t temp;
-	if (time == 0)
-		LED_ON(LED);
-	else if (++temp == time)
-		LED_Toggle(LED), temp = 0;
+	if(time==0) LED_ON();
+	else if(++temp==time) LED_Toggle(),temp=0;
 }
+
+

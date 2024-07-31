@@ -129,6 +129,14 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initPeripheralInputFunction(
         GPIO_UART_1_IOMUX_RX, GPIO_UART_1_IOMUX_RX_FUNC);
 
+    DL_GPIO_initDigitalOutputFeatures(LED1_PIN_0_IOMUX,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_DOWN,
+		 DL_GPIO_DRIVE_STRENGTH_LOW, DL_GPIO_HIZ_DISABLE);
+
+    DL_GPIO_initDigitalInput(KEY_PIN_21_IOMUX);
+
+    DL_GPIO_initDigitalOutput(GPIO_GRP_0_PIN_1_IOMUX);
+
     DL_GPIO_initDigitalOutput(AIN1_PIN_12_IOMUX);
 
     DL_GPIO_initDigitalOutput(AIN2_PIN_13_IOMUX);
@@ -141,20 +149,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(GPIO_SI_PIN_25_IOMUX);
 
-    DL_GPIO_initDigitalOutput(BEEPER_BEEP_IOMUX);
-
-    DL_GPIO_initDigitalInput(EXTENAL_KEY_BUTTON_IOMUX);
-
-    DL_GPIO_initDigitalOutputFeatures(LEDS_LED_R_IOMUX,
-		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_DOWN,
-		 DL_GPIO_DRIVE_STRENGTH_LOW, DL_GPIO_HIZ_DISABLE);
-
-    DL_GPIO_initDigitalOutput(LEDS_LED_G_IOMUX);
-
-    DL_GPIO_initDigitalOutput(LEDS_LED_B_IOMUX);
-
-    DL_GPIO_initDigitalInput(KEYR_KEY_R_IOMUX);
-
     DL_GPIO_initDigitalInput(ENCODERA_E1A_IOMUX);
 
     DL_GPIO_initDigitalInput(ENCODERA_E1B_IOMUX);
@@ -163,22 +157,14 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalInput(ENCODERB_E2B_IOMUX);
 
-    DL_GPIO_initDigitalOutput(I2C_SCL_IOMUX);
-
-    DL_GPIO_initDigitalOutput(I2C_SDA_IOMUX);
-
-    DL_GPIO_initDigitalInput(KEYL_KEY_L_IOMUX);
-
-    DL_GPIO_clearPins(GPIOA, AIN1_PIN_12_PIN |
+    DL_GPIO_clearPins(GPIOA, LED1_PIN_0_PIN |
+		AIN1_PIN_12_PIN |
 		AIN2_PIN_13_PIN |
 		GPIO_SI_PIN_25_PIN);
-    DL_GPIO_setPins(GPIOA, I2C_SCL_PIN |
-		I2C_SDA_PIN);
-    DL_GPIO_enableOutput(GPIOA, AIN1_PIN_12_PIN |
+    DL_GPIO_enableOutput(GPIOA, LED1_PIN_0_PIN |
+		AIN1_PIN_12_PIN |
 		AIN2_PIN_13_PIN |
-		GPIO_SI_PIN_25_PIN |
-		I2C_SCL_PIN |
-		I2C_SDA_PIN);
+		GPIO_SI_PIN_25_PIN);
     DL_GPIO_setLowerPinsPolarity(GPIOA, DL_GPIO_PIN_15_EDGE_RISE);
     DL_GPIO_setUpperPinsPolarity(GPIOA, DL_GPIO_PIN_16_EDGE_RISE |
 		DL_GPIO_PIN_17_EDGE_RISE |
@@ -191,20 +177,14 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		ENCODERA_E1B_PIN |
 		ENCODERB_E2A_PIN |
 		ENCODERB_E2B_PIN);
-    DL_GPIO_clearPins(GPIOB, BIN1_Pin_Bin1_PIN |
+    DL_GPIO_clearPins(GPIOB, GPIO_GRP_0_PIN_1_PIN |
+		BIN1_Pin_Bin1_PIN |
 		BIN2_Pin_Bin2_PIN |
-		GPIO_CLK_PIN_23_PIN |
-		BEEPER_BEEP_PIN |
-		LEDS_LED_R_PIN |
-		LEDS_LED_G_PIN |
-		LEDS_LED_B_PIN);
-    DL_GPIO_enableOutput(GPIOB, BIN1_Pin_Bin1_PIN |
+		GPIO_CLK_PIN_23_PIN);
+    DL_GPIO_enableOutput(GPIOB, GPIO_GRP_0_PIN_1_PIN |
+		BIN1_Pin_Bin1_PIN |
 		BIN2_Pin_Bin2_PIN |
-		GPIO_CLK_PIN_23_PIN |
-		BEEPER_BEEP_PIN |
-		LEDS_LED_R_PIN |
-		LEDS_LED_G_PIN |
-		LEDS_LED_B_PIN);
+		GPIO_CLK_PIN_23_PIN);
     DL_GPIO_setUpperPinsPolarity(GPIOB, DL_GPIO_PIN_21_EDGE_RISE);
 
 }
@@ -340,11 +320,11 @@ SYSCONFIG_WEAK void SYSCFG_DL_UART_0_init(void)
     DL_UART_Main_init(UART_0_INST, (DL_UART_Main_Config *) &gUART_0Config);
     /*
      * Configure baud rate by setting oversampling and baud rate divisors.
-     *  Target baud rate: 115200
-     *  Actual baud rate: 115107.91
+     *  Target baud rate: 9600
+     *  Actual baud rate: 9598.08
      */
     DL_UART_Main_setOversampling(UART_0_INST, DL_UART_OVERSAMPLING_RATE_16X);
-    DL_UART_Main_setBaudRateDivisor(UART_0_INST, UART_0_IBRD_4_MHZ_115200_BAUD, UART_0_FBRD_4_MHZ_115200_BAUD);
+    DL_UART_Main_setBaudRateDivisor(UART_0_INST, UART_0_IBRD_4_MHZ_9600_BAUD, UART_0_FBRD_4_MHZ_9600_BAUD);
 
 
     /* Configure Interrupts */

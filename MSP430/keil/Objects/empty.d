@@ -54,9 +54,6 @@
   ..\source\ti\driverlib\dl_uart.h ..\source\ti\driverlib\dl_uart_main.h \
   ..\source\ti\driverlib\dl_vref.h ..\source\ti\driverlib\dl_wwdt.h \
   ..\source\ti\driverlib\m0p\dl_interrupt.h \
-  ..\source\ti\driverlib\m0p\dl_systick.h ..\Hardware\inv_mpu.h \
-  ..\Hardware\inv_mpu_dmp_motion_driver.h ..\Hardware\dmpKey.h \
-  ..\Hardware\dmpmap.h ..\Hardware\mpu6050.h ..\..\MSP430\board.h \
-  ..\Hardware\IOI2C.h ..\..\MSP430\ti_msp_dl_config.h \
-  ..\Hardware\filter.h ..\Hardware\key.h ..\Hardware\led.h \
+  ..\source\ti\driverlib\m0p\dl_systick.h ..\Hardware\key.h \
+  ..\..\MSP430\ti_msp_dl_config.h ..\..\MSP430\board.h ..\Hardware\led.h \
   ..\Hardware\motor.h ..\Hardware\CCD.h

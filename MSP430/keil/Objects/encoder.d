@@ -56,6 +56,4 @@
   ..\source\ti\driverlib\dl_vref.h ..\source\ti\driverlib\dl_wwdt.h \
   ..\source\ti\driverlib\m0p\dl_interrupt.h \
   ..\source\ti\driverlib\m0p\dl_systick.h ..\..\MSP430\board.h \
-  ..\Hardware\inv_mpu.h ..\Hardware\inv_mpu_dmp_motion_driver.h \
-  ..\Hardware\dmpKey.h ..\Hardware\dmpmap.h ..\Hardware\mpu6050.h \
-  ..\Hardware\IOI2C.h ..\Hardware\filter.h ..\Hardware\led.h
+  ..\Hardware\led.h

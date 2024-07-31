@@ -1,6 +1,5 @@
 #include "CCD.h"
 
-extern int Turn_Flag;
 extern uint8_t CCD_Zhongzhi;
 uint16_t ADV[128]={0};
 unsigned int adc_value = 0;
@@ -110,20 +109,11 @@ void  Find_CCD_Median (void)
 		 }
    }
 	CCD_Zhongzhi =(uint8_t)(Right+Left)/2;//计算中线位置
-	// if(myabs_uint_16_t(CCD_Median-Last_CCD_Median)>90)   //计算中线的偏差，如果太大
-	// CCD_Median=Last_CCD_Median;    //则取上一次的值
-	// Last_CCD_Median=CCD_Median;  //保存上一次的偏差
-
-  	if (Right - Left > 12)
-	{
-		Turn_Flag = 1; // Automatic
-	}
-	else
-	{
-		Turn_Flag = 0; // Striaght line
-	}
+//	if(myabs_uint_16_t(CCD_Median-Last_CCD_Median)>90)   //计算中线的偏差，如果太大
+//	CCD_Median=Last_CCD_Median;    //则取上一次的值
+//	Last_CCD_Median=CCD_Median;  //保存上一次的偏差
 	
-	// uart0_send_uint8(CCD_Median);
+	//uart0_send_uint8(CCD_Median);
 }
 
 
