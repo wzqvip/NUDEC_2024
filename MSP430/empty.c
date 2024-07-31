@@ -149,7 +149,7 @@ int main(void)
 		}
 	}
 	LED_ON(track_num+1);
-	Velocity = 15;
+	Velocity = 8;
 
 	while (1)
 	{
@@ -248,7 +248,8 @@ float calibrate_offset(float curr_velocity){
 			DL_GPIO_setPins(GPIO_CLK_PORT, GPIO_CLK_PIN_23_PIN); // TSL_CLK=1;
 		}
 		Find_CCD_Median();
-		return_offset+=CCD_Mode_return_turn();
+		CCD_Mode();
+		return_offset+=Turn;
 		sample_num++;
 		delay_us(100);
 	}
@@ -338,15 +339,14 @@ void CCD_Mode(void)
 	printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
 }
 
-float CCD_Mode_return_turn(void)
-{
-	static float Bias, Last_Bias; // 这里原来是static float!!
-	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
-	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
-	Total_Turns += Turn;
-	Last_Bias = Bias; // 保存上一次的偏差
-	return Total_Turns;
-}
+// float CCD_Mode_return_turn(void)
+// {
+// 	static float Bias, Last_Bias; // 这里原来是static float!!
+// 	Bias = CCD_Zhongzhi - 64;									  // 提取偏差
+// 	Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
+// 	Last_Bias = Bias; // 保存上一次的偏差
+// 	return Turn;
+// }
 
 void APP_Show(void)
 {
