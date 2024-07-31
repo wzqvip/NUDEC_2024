@@ -188,7 +188,7 @@ TIMER1.timerClkPrescale = 200;
 TIMER1.timerStartTimer  = true;
 TIMER1.timerMode        = "PERIODIC";
 TIMER1.interrupts       = ["ZERO"];
-TIMER1.timerPeriod      = "10 ms";
+TIMER1.timerPeriod      = "20 ms";
 
 UART1.$name                    = "UART_0";
 UART1.enabledInterrupts        = ["RX"];

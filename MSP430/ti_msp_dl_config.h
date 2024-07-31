@@ -101,7 +101,7 @@ extern "C" {
 #define TIMER_0_INST                                                     (TIMA0)
 #define TIMER_0_INST_IRQHandler                                 TIMA0_IRQHandler
 #define TIMER_0_INST_INT_IRQN                                   (TIMA0_INT_IRQn)
-#define TIMER_0_INST_LOAD_VALUE                                           (199U)
+#define TIMER_0_INST_LOAD_VALUE                                           (399U)
 
 
 
@@ -152,6 +152,12 @@ extern "C" {
 
 
 
+/* Port definition for Pin Group KEYR */
+#define KEYR_PORT                                                        (GPIOB)
+
+/* Defines for KEY_R: GPIOB.21 with pinCMx 49 on package pin 20 */
+#define KEYR_KEY_R_PIN                                          (DL_GPIO_PIN_21)
+#define KEYR_KEY_R_IOMUX                                         (IOMUX_PINCM49)
 /* Port definition for Pin Group AIN1 */
 #define AIN1_PORT                                                        (GPIOA)
 
@@ -200,6 +206,12 @@ extern "C" {
 /* Defines for BUTTON: GPIOB.5 with pinCMx 18 on package pin 53 */
 #define EXTENAL_KEY_BUTTON_PIN                                   (DL_GPIO_PIN_5)
 #define EXTENAL_KEY_BUTTON_IOMUX                                 (IOMUX_PINCM18)
+/* Port definition for Pin Group KEYL */
+#define KEYL_PORT                                                        (GPIOA)
+
+/* Defines for KEY_L: GPIOA.18 with pinCMx 40 on package pin 11 */
+#define KEYL_KEY_L_PIN                                          (DL_GPIO_PIN_18)
+#define KEYL_KEY_L_IOMUX                                         (IOMUX_PINCM40)
 /* Port definition for Pin Group LEDS */
 #define LEDS_PORT                                                        (GPIOB)
 
@@ -212,12 +224,6 @@ extern "C" {
 /* Defines for LED_B: GPIOB.22 with pinCMx 50 on package pin 21 */
 #define LEDS_LED_B_PIN                                          (DL_GPIO_PIN_22)
 #define LEDS_LED_B_IOMUX                                         (IOMUX_PINCM50)
-/* Port definition for Pin Group KEYR */
-#define KEYR_PORT                                                        (GPIOB)
-
-/* Defines for KEY_R: GPIOB.21 with pinCMx 49 on package pin 20 */
-#define KEYR_KEY_R_PIN                                          (DL_GPIO_PIN_21)
-#define KEYR_KEY_R_IOMUX                                         (IOMUX_PINCM49)
 /* Port definition for Pin Group ENCODERA */
 #define ENCODERA_PORT                                                    (GPIOA)
 
@@ -253,12 +259,6 @@ extern "C" {
 /* Defines for SDA: GPIOA.1 with pinCMx 2 on package pin 34 */
 #define I2C_SDA_PIN                                              (DL_GPIO_PIN_1)
 #define I2C_SDA_IOMUX                                             (IOMUX_PINCM2)
-/* Port definition for Pin Group KEYL */
-#define KEYL_PORT                                                        (GPIOA)
-
-/* Defines for KEY_L: GPIOA.18 with pinCMx 40 on package pin 11 */
-#define KEYL_KEY_L_PIN                                          (DL_GPIO_PIN_18)
-#define KEYL_KEY_L_IOMUX                                         (IOMUX_PINCM40)
 
 
 

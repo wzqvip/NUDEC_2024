@@ -129,6 +129,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initPeripheralInputFunction(
         GPIO_UART_1_IOMUX_RX, GPIO_UART_1_IOMUX_RX_FUNC);
 
+    DL_GPIO_initDigitalInput(KEYR_KEY_R_IOMUX);
+
     DL_GPIO_initDigitalOutput(AIN1_PIN_12_IOMUX);
 
     DL_GPIO_initDigitalOutput(AIN2_PIN_13_IOMUX);
@@ -145,6 +147,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalInput(EXTENAL_KEY_BUTTON_IOMUX);
 
+    DL_GPIO_initDigitalInput(KEYL_KEY_L_IOMUX);
+
     DL_GPIO_initDigitalOutputFeatures(LEDS_LED_R_IOMUX,
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_DOWN,
 		 DL_GPIO_DRIVE_STRENGTH_LOW, DL_GPIO_HIZ_DISABLE);
@@ -152,8 +156,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initDigitalOutput(LEDS_LED_G_IOMUX);
 
     DL_GPIO_initDigitalOutput(LEDS_LED_B_IOMUX);
-
-    DL_GPIO_initDigitalInput(KEYR_KEY_R_IOMUX);
 
     DL_GPIO_initDigitalInput(ENCODERA_E1A_IOMUX);
 
@@ -166,8 +168,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initDigitalOutput(I2C_SCL_IOMUX);
 
     DL_GPIO_initDigitalOutput(I2C_SDA_IOMUX);
-
-    DL_GPIO_initDigitalInput(KEYL_KEY_L_IOMUX);
 
     DL_GPIO_clearPins(GPIOA, AIN1_PIN_12_PIN |
 		AIN2_PIN_13_PIN |
@@ -293,7 +293,7 @@ static const DL_TimerA_ClockConfig gTIMER_0ClockConfig = {
 
 /*
  * Timer load value (where the counter starts from) is calculated as (timerPeriod * timerClockFreq) - 1
- * TIMER_0_INST_LOAD_VALUE = (10 ms * 20000 Hz) - 1
+ * TIMER_0_INST_LOAD_VALUE = (20 ms * 20000 Hz) - 1
  */
 static const DL_TimerA_TimerConfig gTIMER_0TimerConfig = {
     .period     = TIMER_0_INST_LOAD_VALUE,

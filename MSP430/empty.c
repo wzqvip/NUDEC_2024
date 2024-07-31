@@ -35,25 +35,26 @@
 #include "led.h"
 #include "motor.h"
 #include "CCD.h"
-#include "stdlib.h"
+// #include "stdlib.h"
 
 bool Turn_Flag = 0;
 // bool last_state__ = 0;
 
-int Diff_Delta = 1250;
 int Total_A_CNT = 0;
 int Total_B_CNT = 0;
 int Delta_Target = 0;
 int Total_turns = 0;
 uint8_t track_num = 0;
 
+// int last_distance = 0;
+
 // 6050
-void Get_Angle(uint8_t way);
-#define Pi 3.14159265
-uint8_t Way_Angle = 2;						  // 获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波
-float Angle_Balance, Gyro_Balance, Gyro_Turn; // 平衡倾角 平衡陀螺仪 转向陀螺仪
-float Acceleration_Z;
-int color = 1; // 1,2,3
+// void Get_Angle(uint8_t way);
+// #define Pi 3.14159265
+// uint8_t Way_Angle = 2;						  // 获取角度的算法，1：四元数  2：卡尔曼  3：互补滤波
+// float Angle_Balance, Gyro_Balance, Gyro_Turn; // 平衡倾角 平衡陀螺仪 转向陀螺仪
+// float Acceleration_Z;
+// int color = 1; // 1,2,3
 
 int32_t Get_Encoder_countA, encoderA_cnt, PWMA, Get_Encoder_countB, encoderB_cnt, PWMB;
 uint8_t Key_Num = 0;
@@ -75,6 +76,9 @@ int main(void)
 	int i = 0;
 	int tslp = 0;
 	static int last_state__ = 0;
+	static int last_distance = 0;
+	 int Diff_Delta = 1270;
+	 int min_distance = 3000;
 	SYSCFG_DL_init();
 
 	// MPU6050_initialize();
@@ -133,7 +137,8 @@ int main(void)
 		}
 	}
 	LED_ON(track_num + 1);
-	Velocity = 8;
+	Velocity = 9;
+	last_distance = 0;
 
 	while (1)
 	{
@@ -180,7 +185,12 @@ int main(void)
 			{
 				last_state__ = 1;
 				// LED_Blink(0, 10);
-				Total_turns++;
+				int travel_dist = -(Total_A_CNT - last_distance);
+				if (travel_dist > min_distance)
+				{
+					Total_turns++;
+					last_distance = -(Total_A_CNT);
+				}
 			}
 		}
 		else
@@ -206,13 +216,13 @@ int main(void)
 		{
 			Delta_Target = Total_turns * Diff_Delta;
 			// A 是负的，走的多。
-			if (Total_A_CNT + Total_B_CNT < -Delta_Target - 100)
+			if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
 			{
-				Turn = -1;
+				Turn = -0.5;
 			}
-			else if (Total_B_CNT + Total_B_CNT > Delta_Target + 100)
+			else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
 			{
-				Turn = 1;
+				Turn = 0.5;
 			}
 			else
 			{
@@ -233,7 +243,7 @@ int main(void)
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
 
 		// printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
-		printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
+		printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, -(Total_A_CNT) - last_distance);
 	}
 }
 
@@ -314,61 +324,61 @@ Output  : none
 入口参数：way：获取角度的算法 1：DMP  2：卡尔曼 3：互补滤波
 返回  值：无
 **************************************************************************/
-void Get_Angle(uint8_t way)
-{
-	float gyro_x, gyro_y, accel_x, accel_y, accel_z;
-	float Accel_Y, Accel_Z, Accel_X, Accel_Angle_x, Accel_Angle_y, Gyro_X, Gyro_Z, Gyro_Y;
-	if (way == 1) // DMP的读取在数据采集中断读取，严格遵循时序要求
-	{
-		Read_DMP();				   // 读取加速度、角速度、倾角
-		Angle_Balance = Pitch;	   // 更新平衡倾角,前倾为正，后倾为负
-		Gyro_Balance = gyro[0];	   // 更新平衡角速度,前倾为正，后倾为负
-		Gyro_Turn = gyro[2];	   // 更新转向角速度
-		Acceleration_Z = accel[2]; // 更新Z轴加速度计
-	}
-	else
-	{
-		Gyro_X = (I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_XOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_XOUT_L);	// 读取X轴陀螺仪
-		Gyro_Y = (I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_YOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_YOUT_L);	// 读取Y轴陀螺仪
-		Gyro_Z = (I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_ZOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_ZOUT_L);	// 读取Z轴陀螺仪
-		Accel_X = (I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_XOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_XOUT_L); // 读取X轴加速度计
-		Accel_Y = (I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_YOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_YOUT_L); // 读取X轴加速度计
-		Accel_Z = (I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_ZOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_ZOUT_L); // 读取Z轴加速度计
-		if (Gyro_X > 32768)
-			Gyro_X -= 65536; // 数据类型转换  也可通过short强制类型转换
-		if (Gyro_Y > 32768)
-			Gyro_Y -= 65536; // 数据类型转换  也可通过short强制类型转换
-		if (Gyro_Z > 32768)
-			Gyro_Z -= 65536; // 数据类型转换
-		if (Accel_X > 32768)
-			Accel_X -= 65536; // 数据类型转换
-		if (Accel_Y > 32768)
-			Accel_Y -= 65536; // 数据类型转换
-		if (Accel_Z > 32768)
-			Accel_Z -= 65536;								// 数据类型转换
-		Gyro_Balance = -Gyro_X;								// 更新平衡角速度
-		Accel_Angle_x = atan2(Accel_Y, Accel_Z) * 180 / Pi; // 计算倾角，转换单位为度
-		Accel_Angle_y = atan2(Accel_X, Accel_Z) * 180 / Pi; // 计算倾角，转换单位为度
-		accel_x = Accel_X / 1671.84;
-		accel_y = Accel_Y / 1671.84;
-		accel_z = Accel_Z / 1671.84;
-		gyro_x = Gyro_X / 16.4; // 陀螺仪量程转换
-		gyro_y = Gyro_Y / 16.4; // 陀螺仪量程转换
-		if (Way_Angle == 2)
-		{
-			Pitch = -Kalman_Filter_x(Accel_Angle_x, gyro_x); // 卡尔曼滤波
-			Roll = -Kalman_Filter_y(Accel_Angle_y, gyro_y);
-		}
-		else if (Way_Angle == 3)
-		{
-			Pitch = -Complementary_Filter_x(Accel_Angle_x, gyro_x); // 互补滤波
-			Roll = -Complementary_Filter_y(Accel_Angle_y, gyro_y);
-		}
-		Angle_Balance = Pitch;	  // 更新平衡倾角
-		Gyro_Turn = Gyro_Z;		  // 更新转向角速度
-		Acceleration_Z = Accel_Z; // 更新Z轴加速度计
-	}
-}
+// void Get_Angle(uint8_t way)
+// {
+// 	float gyro_x, gyro_y, accel_x, accel_y, accel_z;
+// 	float Accel_Y, Accel_Z, Accel_X, Accel_Angle_x, Accel_Angle_y, Gyro_X, Gyro_Z, Gyro_Y;
+// 	if (way == 1) // DMP的读取在数据采集中断读取，严格遵循时序要求
+// 	{
+// 		Read_DMP();				   // 读取加速度、角速度、倾角
+// 		Angle_Balance = Pitch;	   // 更新平衡倾角,前倾为正，后倾为负
+// 		Gyro_Balance = gyro[0];	   // 更新平衡角速度,前倾为正，后倾为负
+// 		Gyro_Turn = gyro[2];	   // 更新转向角速度
+// 		Acceleration_Z = accel[2]; // 更新Z轴加速度计
+// 	}
+// 	else
+// 	{
+// 		Gyro_X = (I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_XOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_XOUT_L);	// 读取X轴陀螺仪
+// 		Gyro_Y = (I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_YOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_YOUT_L);	// 读取Y轴陀螺仪
+// 		Gyro_Z = (I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_ZOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_GYRO_ZOUT_L);	// 读取Z轴陀螺仪
+// 		Accel_X = (I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_XOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_XOUT_L); // 读取X轴加速度计
+// 		Accel_Y = (I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_YOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_YOUT_L); // 读取X轴加速度计
+// 		Accel_Z = (I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_ZOUT_H) << 8) + I2C_ReadOneByte(devAddr, MPU6050_RA_ACCEL_ZOUT_L); // 读取Z轴加速度计
+// 		if (Gyro_X > 32768)
+// 			Gyro_X -= 65536; // 数据类型转换  也可通过short强制类型转换
+// 		if (Gyro_Y > 32768)
+// 			Gyro_Y -= 65536; // 数据类型转换  也可通过short强制类型转换
+// 		if (Gyro_Z > 32768)
+// 			Gyro_Z -= 65536; // 数据类型转换
+// 		if (Accel_X > 32768)
+// 			Accel_X -= 65536; // 数据类型转换
+// 		if (Accel_Y > 32768)
+// 			Accel_Y -= 65536; // 数据类型转换
+// 		if (Accel_Z > 32768)
+// 			Accel_Z -= 65536;								// 数据类型转换
+// 		Gyro_Balance = -Gyro_X;								// 更新平衡角速度
+// 		Accel_Angle_x = atan2(Accel_Y, Accel_Z) * 180 / Pi; // 计算倾角，转换单位为度
+// 		Accel_Angle_y = atan2(Accel_X, Accel_Z) * 180 / Pi; // 计算倾角，转换单位为度
+// 		accel_x = Accel_X / 1671.84;
+// 		accel_y = Accel_Y / 1671.84;
+// 		accel_z = Accel_Z / 1671.84;
+// 		gyro_x = Gyro_X / 16.4; // 陀螺仪量程转换
+// 		gyro_y = Gyro_Y / 16.4; // 陀螺仪量程转换
+// 		if (Way_Angle == 2)
+// 		{
+// 			Pitch = -Kalman_Filter_x(Accel_Angle_x, gyro_x); // 卡尔曼滤波
+// 			Roll = -Kalman_Filter_y(Accel_Angle_y, gyro_y);
+// 		}
+// 		else if (Way_Angle == 3)
+// 		{
+// 			Pitch = -Complementary_Filter_x(Accel_Angle_x, gyro_x); // 互补滤波
+// 			Roll = -Complementary_Filter_y(Accel_Angle_y, gyro_y);
+// 		}
+// 		Angle_Balance = Pitch;	  // 更新平衡倾角
+// 		Gyro_Turn = Gyro_Z;		  // 更新转向角速度
+// 		Acceleration_Z = Accel_Z; // 更新Z轴加速度计
+// 	}
+// }
 
 // /******************************************************************************
 // ***
