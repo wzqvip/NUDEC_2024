@@ -45,6 +45,11 @@ int Total_B_CNT = 0;
 int Delta_Target = 0;
 int Total_turns = 0;
 
+int temp_A_cnt = 0;
+int temp_B_cnt = 0;
+int turn_threshold = 1270;
+int line_threshold = 3000;
+
 
 // int last_distance = 0;
 
@@ -206,103 +211,61 @@ int main(void)
 
 		if (track_num == 1)
 		{
-			//0 - 3000~4000 直线
-			if (Total_A_CNT < 3000) {
-				// Turn_Flag = 0;
-				Total_turns = 0;
-				// last_state__ = 0;
-			}
-			// 4000 - 8000~9500 绕
-			if (Total_A_CNT > 4000 && Total_A_CNT < 8000) {
-				// Turn_Flag = 1;
-				Total_turns = 0;
-				// last_state__ = 1;
-			}
-
-			// 9500 - 12000~13000 直线 （T=1)
-			if (Total_A_CNT > 9500 && Total_A_CNT < 12000) {
-				// Turn_Flag = 0;
-				Total_turns = 1;
-				// last_state__ = 0;
-			}
-
-			// 13000 - 17000~18000 绕
-			if (Total_A_CNT > 13000 && Total_A_CNT < 18000) {
-				// Turn_Flag = 0;
-				Total_turns = 1;
-				// last_state__ = 0;
-			}
-			if (Total_A_CNT > 18050) {
-				Total_turns = 2;
-			}
-			// 结束
-
 			if (Total_turns == 2) // 转了两次弯之后（出寻线模式的时候会+1）
-			{
-				Turn = 0;
-				for (int k = 0; k < 10; k++)
-				{
-					Set_PWM(3000, 3000); // 保证到达A点
-					LED_Blink(0, 100);
+			if (Turn_Flag == 1)
+			{ // 巡线模式
+				if(temp_A_cnt + temp_B_cnt < (min_distance/2)) {
+					Turn_Flag = 0;
 				}
-				Velocity = 0;
-				Set_PWM(0, 0);
-
-				while (1)
-					;
-			}
-		}
-
-		if (Turn_Flag == 1)
-		{ // 巡线模式
-			if (last_state__ == 0)
-			{
-				last_state__ = 1;
-				int travel_dist = -(Total_A_CNT - last_distance);
-				if (travel_dist > min_distance) 
-				{// 走距离足够了。
-					LED_Blink(0, 3);
-					Total_turns++;
-					last_distance = -(Total_A_CNT);
-				} else {// 如果不小心出巡线模式又回来
-
-				}
-			}
-		}
-		else
-		{ // 直线模式。
-			if (last_state__ == 1)
-			{
+				else {
+					temp_A_cnt = 0;
+					temp_B_cnt = 0;
 					last_state__ = 0;
 					LED_Blink(0, 3);
+				}
 			}
-		}
-
-		// CCD_Mode(); // CCD巡线PID
-
-		if (Turn_Flag)
-		{
-			static float Bias, Last_Bias;								  // 这里原来是static float!!
-			Bias = CCD_Zhongzhi - 64;									  // 提取偏差
-			Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
-			Last_Bias = Bias;											  // 保存上一次的偏差
-																		  // printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
-		}
-		else
-		{
-			Delta_Target = Total_turns * Diff_Delta;
-			// A 是负的，走的多。
-			if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
-			{
-				Turn = -0.5;
+			else
+			{ // 直线模式。
+				if (last_state__ == 1)
+				{
+					if (-temp_A_cnt - temp_B_cnt > min_distance)
+					{
+						Turn_Flag = 1;
+						Total_turns++;
+						LED_Blink(0, 3);
+						last_state__ = 0;
+						temp_A_cnt = 0;
+						temp_B_cnt = 0;
+					}
+				}
 			}
-			else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
+
+			// CCD_Mode(); // CCD巡线PID
+
+			if (Turn_Flag)
 			{
-				Turn = 0.5;
+				static float Bias, Last_Bias;								  // 这里原来是static float!!
+				Bias = CCD_Zhongzhi - 64;									  // 提取偏差
+				Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
+				Last_Bias = Bias;											  // 保存上一次的偏差
+																			// printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
 			}
 			else
 			{
-				Turn = 0;
+				Delta_Target = Total_turns * Diff_Delta;
+				// A 是负的，走的多。
+				if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
+				{
+					Turn = -0.5;
+				}
+				else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
+				{
+					Turn = 0.5;
+				}
+				else
+				{
+					Turn = 0;
+				}
 			}
 		}
 
@@ -334,6 +297,8 @@ void TIMER_0_INST_IRQHandler(void)
 			encoderB_cnt = Get_Encoder_countB;
 			Total_A_CNT += encoderA_cnt;
 			Total_B_CNT += encoderB_cnt;
+			temp_A_cnt += encoderA_cnt;
+			temp_B_cnt += encoderB_cnt;
 			Get_Encoder_countA = 0;
 			Get_Encoder_countB = 0;
 			// LED_Flash(100, 2);					// LED1闪烁
