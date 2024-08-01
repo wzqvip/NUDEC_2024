@@ -210,7 +210,7 @@ int main(void)
 
 			if (ABS(Total_A_CNT) < 7000) {
 				Total_turns = 0;
-			}else if(ABS(Total_A_CNT) < 16000) {
+			}else if(ABS(Total_A_CNT) < 18000) {
 				Total_turns = 1;
 			}
 
