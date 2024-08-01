@@ -103,7 +103,7 @@ void _sys_exit(int x)
 #endif
 
 
-// //printf函数重定义
+// //printf函数重定义																
 // int fputc(int ch, FILE *stream)
 // {
 // 	//当串口0忙的时候等待，不忙的时候再发送传进来的字符
@@ -114,13 +114,14 @@ void _sys_exit(int x)
 // 	return ch;
 // }
 
+
 //printf函数重定义
 int fputc(int ch, FILE *stream)
 {
     // 当串口忙的时候等待，不忙的时候再发送传进来的字符
-    while(DL_UART_isBusy(UART_1_INST) == true);
+    while(DL_UART_isBusy(UART_0_INST) == true);
     
-    DL_UART_Main_transmitData(UART_1_INST, ch);
+    DL_UART_Main_transmitData(UART_0_INST, ch);
     
     return ch;
 }

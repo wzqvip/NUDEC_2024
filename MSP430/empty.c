@@ -44,7 +44,7 @@ int Total_A_CNT = 0;
 int Total_B_CNT = 0;
 int Delta_Target = 0;
 int Total_turns = 0;
-uint8_t track_num = 0;
+
 
 // int last_distance = 0;
 
@@ -67,7 +67,7 @@ uint8_t CCD_Zhongzhi;
 void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
 void CCD_Mode(void);
-float Velocity_KP = 0.047, Velocity_KI = 0.007; // 速度控制PID参数
+float Velocity_KP = 0.044, Velocity_KI = 0.007; // 速度控制PID参数
 // float calibrate_offset(float curr_velocity);
 float offset = 0;
 
@@ -77,8 +77,9 @@ int main(void)
 	int tslp = 0;
 	static int last_state__ = 0;
 	static int last_distance = 0;
-	 int Diff_Delta = 1270;
-	 int min_distance = 3000;
+	static int track_num = 0;
+	int Diff_Delta = 1270;
+	int min_distance = 4000;
 	SYSCFG_DL_init();
 
 	// MPU6050_initialize();
@@ -126,18 +127,23 @@ int main(void)
 			}
 			else
 			{
-				LED_Blink(0, 50);
+				// LED_Blink(0, 50);
+				for (int k = 0; k < track_num+1; k++) {
+					LED_Blink(0,50);
+					delay_1ms(50);
+				}
 				track_num++;
 				if (track_num > 3)
 				{
 					track_num = 0;
 				}
+				printf("Track_num: %d", track_num);
 				LED_Blink(track_num + 1, 200);
 			}
 		}
 	}
 	LED_ON(track_num + 1);
-	Velocity = 9;
+	Velocity = 10;
 	last_distance = 0;
 
 	while (1)
@@ -180,23 +186,70 @@ int main(void)
 		Find_CCD_Median();
 
 		// 赛道区别
-		if (track_num == 0) {
-			if (Turn_Flag == 1) {
-				Velocity = 0;
+		if (track_num == 0)
+		{
+			if (Turn_Flag == 1) // 第一次进入寻线模式就可以结束了。
+			{ 
+
 				Turn = 0;
-				Set_PWM(0,0);
-				LED_Blink(0,1000);
-				while(1);
+				for (int k = 0; k < 10; k++)
+				{
+					Set_PWM(3000, 3000); // 保证到达A点
+					LED_Blink(0, 100);
+				}
+				Velocity = 0;
+				Set_PWM(0, 0);
+				while (1)
+					;
 			}
 		}
 
-		if (track_num == 0) {
-			if (Total_turns == 2) {
-				Velocity = 0;
+		if (track_num == 1)
+		{
+			//0 - 3000~4000 直线
+			if (Total_A_CNT < 3000) {
+				// Turn_Flag = 0;
+				Total_turns = 0;
+				// last_state__ = 0;
+			}
+			// 4000 - 8000~9500 绕
+			if (Total_A_CNT > 4000 && Total_A_CNT < 8000) {
+				// Turn_Flag = 1;
+				Total_turns = 0;
+				// last_state__ = 1;
+			}
+
+			// 9500 - 12000~13000 直线 （T=1)
+			if (Total_A_CNT > 9500 && Total_A_CNT < 12000) {
+				// Turn_Flag = 0;
+				Total_turns = 1;
+				// last_state__ = 0;
+			}
+
+			// 13000 - 17000~18000 绕
+			if (Total_A_CNT > 13000 && Total_A_CNT < 18000) {
+				// Turn_Flag = 0;
+				Total_turns = 1;
+				// last_state__ = 0;
+			}
+			if (Total_A_CNT > 18050) {
+				Total_turns = 2;
+			}
+			// 结束
+
+			if (Total_turns == 2) // 转了两次弯之后（出寻线模式的时候会+1）
+			{
 				Turn = 0;
-				Set_PWM(0,0);
-				LED_Blink(0,1000);
-				while(1);
+				for (int k = 0; k < 10; k++)
+				{
+					Set_PWM(3000, 3000); // 保证到达A点
+					LED_Blink(0, 100);
+				}
+				Velocity = 0;
+				Set_PWM(0, 0);
+
+				while (1)
+					;
 			}
 		}
 
@@ -205,12 +258,14 @@ int main(void)
 			if (last_state__ == 0)
 			{
 				last_state__ = 1;
-				// LED_Blink(0, 10);
 				int travel_dist = -(Total_A_CNT - last_distance);
-				if (travel_dist > min_distance)
-				{
+				if (travel_dist > min_distance) 
+				{// 走距离足够了。
+					LED_Blink(0, 3);
 					Total_turns++;
 					last_distance = -(Total_A_CNT);
+				} else {// 如果不小心出巡线模式又回来
+
 				}
 			}
 		}
@@ -218,8 +273,8 @@ int main(void)
 		{ // 直线模式。
 			if (last_state__ == 1)
 			{
-				last_state__ = 0;
-				// LED_Blink(0, 10);
+					last_state__ = 0;
+					LED_Blink(0, 3);
 			}
 		}
 
@@ -264,7 +319,7 @@ int main(void)
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
 
 		// printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
-		printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, -(Total_A_CNT) - last_distance);
+		printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, -(Total_A_CNT)-last_distance);
 	}
 }
 
@@ -281,7 +336,7 @@ void TIMER_0_INST_IRQHandler(void)
 			Total_B_CNT += encoderB_cnt;
 			Get_Encoder_countA = 0;
 			Get_Encoder_countB = 0;
-			LED_Flash(100, 2);					// LED1闪烁
+			// LED_Flash(100, 2);					// LED1闪烁
 			Kinematic_Analysis(Velocity, Turn); // 小车运动学分析
 			PWMA = Velocity_A(-Target_A, encoderA_cnt);
 			PWMB = Velocity_B(-Target_B, -encoderB_cnt);
@@ -313,8 +368,8 @@ void ADC_VOLTAGE_INST_IRQHandler(void)
 void Kinematic_Analysis(float velocity, float turn)
 {
 
-	Target_A = (velocity + turn * 1.3);
-	Target_B = (velocity - turn * 1.3); // 后轮差速
+	Target_A = (velocity + turn * 1.6);
+	Target_B = (velocity - turn * 1.6); // 后轮差速
 }
 
 void CCD_Mode(void)
