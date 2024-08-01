@@ -242,7 +242,7 @@ int main(void)
 
 			// CCD_Mode(); // CCD巡线PID
 
-			if (Turn_Flag)
+			if (Turn_Flag && last_state__ == 1)
 			{
 				static float Bias, Last_Bias;								  // 这里原来是static float!!
 				Bias = CCD_Zhongzhi - 64;									  // 提取偏差
@@ -250,22 +250,30 @@ int main(void)
 				Last_Bias = Bias;											  // 保存上一次的偏差
 																			// printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
 			}
-			else
+			else if (!Turn_Flag && last_state__ == 1)
+			{
+				Turn = -1;
+			}
+			else if (!Turn_Flag && last_state__ == 0)
 			{
 				Delta_Target = Total_turns * Diff_Delta;
 				// A 是负的，走的多。
-				if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
+				if (temp_A_cnt + temp_B_cnt < - 30)
 				{
-					Turn = -0.5;
+					Turn = -1;
 				}
-				else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
+				else if (temp_A_cnt + temp_B_cnt > 30)
 				{
-					Turn = 0.5;
+					Turn = 1;
 				}
 				else
 				{
 					Turn = 0;
 				}
+			}
+			else
+			{
+				printf("FATAL ERROR\n");
 			}
 		}
 
