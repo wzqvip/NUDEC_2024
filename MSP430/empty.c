@@ -220,7 +220,7 @@ int main(void)
 				else {
 					temp_A_cnt = 0;
 					temp_B_cnt = 0;
-					last_state__ = 0;
+					last_state__ = 1;
 					LED_Blink(0, 3);
 				}
 			}
