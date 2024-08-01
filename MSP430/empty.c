@@ -89,7 +89,7 @@ int main(void)
 	NVIC_ClearPendingIRQ(UART_0_INST_INT_IRQN);
 	NVIC_ClearPendingIRQ(UART_1_INST_INT_IRQN);
 	NVIC_ClearPendingIRQ(GPIO_MULTIPLE_GPIOA_INT_IRQN);
-	//	NVIC_ClearPendingIRQ(TIMER_0_INST_INT_IRQN);
+	NVIC_ClearPendingIRQ(TIMER_0_INST_INT_IRQN);
 	//	//使能串口中断
 	NVIC_EnableIRQ(UART_1_INST_INT_IRQN);
 	NVIC_EnableIRQ(GPIO_MULTIPLE_GPIOA_INT_IRQN);
@@ -207,47 +207,21 @@ int main(void)
 		if (track_num == 1)
 		{
 			//0 - 3000~4000 直线
-			if (Total_A_CNT < 3000) {
-				// Turn_Flag = 0;
+
+			if (ABS(Total_A_CNT) < 7000) {
 				Total_turns = 0;
-				// last_state__ = 0;
-			}
-			// 4000 - 8000~9500 绕
-			if (Total_A_CNT > 4000 && Total_A_CNT < 8000) {
-				// Turn_Flag = 1;
-				Total_turns = 0;
-				// last_state__ = 1;
+			}else if(ABS(Total_A_CNT) < 13000) {
+				Total_turns = 1;
 			}
 
-			// 9500 - 12000~13000 直线 （T=1)
-			if (Total_A_CNT > 9500 && Total_A_CNT < 12000) {
-				// Turn_Flag = 0;
-				Total_turns = 1;
-				// last_state__ = 0;
-			}
-
-			// 13000 - 17000~18000 绕
-			if (Total_A_CNT > 13000 && Total_A_CNT < 18000) {
-				// Turn_Flag = 0;
-				Total_turns = 1;
-				// last_state__ = 0;
-			}
-			if (Total_A_CNT > 18050) {
-				Total_turns = 2;
-			}
 			// 结束
 
 			if (Total_turns == 2) // 转了两次弯之后（出寻线模式的时候会+1）
 			{
 				Turn = 0;
-				for (int k = 0; k < 10; k++)
-				{
-					Set_PWM(3000, 3000); // 保证到达A点
-					LED_Blink(0, 100);
-				}
 				Velocity = 0;
 				Set_PWM(0, 0);
-
+				LED_Blink(0, 100);
 				while (1)
 					;
 			}

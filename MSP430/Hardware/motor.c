@@ -1,5 +1,5 @@
 #include "motor.h"
-float Velcity_Kp=10.0,  Velcity_Ki=0.3,  Velcity_Kd; //相关速度PID参数
+float Velcity_Kp=13.0,  Velcity_Ki=0.3,  Velcity_Kd; //相关速度PID参数
 /***********************************************
 公司：轮趣科技（东莞）有限公司
 品牌：WHEELTEC
