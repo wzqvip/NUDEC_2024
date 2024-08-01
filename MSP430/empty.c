@@ -45,7 +45,6 @@ int Total_B_CNT = 0;
 int Delta_Target = 0;
 int Total_turns = 0;
 
-
 // int last_distance = 0;
 
 // 6050
@@ -80,6 +79,7 @@ int main(void)
 	static int track_num = 0;
 	int Diff_Delta = 1270;
 	int min_distance = 4000;
+	static int beep_counter = 0;
 	SYSCFG_DL_init();
 
 	// MPU6050_initialize();
@@ -128,8 +128,9 @@ int main(void)
 			else
 			{
 				// LED_Blink(0, 50);
-				for (int k = 0; k < track_num+1; k++) {
-					LED_Blink(0,50);
+				for (int k = 0; k < track_num + 1; k++)
+				{
+					LED_Blink(0, 50);
 					delay_1ms(50);
 				}
 				track_num++;
@@ -189,7 +190,7 @@ int main(void)
 		if (track_num == 0)
 		{
 			if (Turn_Flag == 1) // 第一次进入寻线模式就可以结束了。
-			{ 
+			{
 
 				Turn = 0;
 				for (int k = 0; k < 10; k++)
@@ -206,17 +207,36 @@ int main(void)
 
 		if (track_num == 1)
 		{
-			//0 - 3000~4000 直线
+			// 0 - 3000~4000 直线
 
-			if (ABS(Total_A_CNT) < 7000) {
+			if (ABS(Total_A_CNT) < 7000)
+			{
 				Total_turns = 0;
-			}else if(ABS(Total_A_CNT) < 18000) {
+			}
+			else if (ABS(Total_A_CNT) < 17000)
+			{
 				Total_turns = 1;
+			}
+
+			if (ABS(Total_A_CNT) > 3600 && beep_counter == 0)
+			{
+				LED_Blink(0, 3);
+				beep_counter = 1;
+			}
+			if (ABS(Total_A_CNT) > 8800 && beep_counter == 1)
+			{
+				LED_Blink(0, 3);
+				beep_counter = 2;
+			}
+			if (ABS(Total_A_CNT) > 12300 && beep_counter == 2)
+			{
+				LED_Blink(0, 3);
+				beep_counter = 3;
 			}
 
 			// 结束
 
-			if (Total_turns == 2) // 转了两次弯之后（出寻线模式的时候会+1）
+			if (Total_turns == 2 || ABS(Total_A_CNT) > 17000) // 转了两次弯之后（出寻线模式的时候会+1）
 			{
 				Turn = 0;
 				Velocity = 0;
@@ -233,13 +253,14 @@ int main(void)
 			{
 				last_state__ = 1;
 				int travel_dist = -(Total_A_CNT - last_distance);
-				if (travel_dist > min_distance) 
-				{// 走距离足够了。
-					LED_Blink(0, 3);
+				if (travel_dist > min_distance)
+				{ // 走距离足够了。
+					// LED_Blink(0, 3);
 					Total_turns++;
 					last_distance = -(Total_A_CNT);
-				} else {// 如果不小心出巡线模式又回来
-
+				}
+				else
+				{ // 如果不小心出巡线模式又回来
 				}
 			}
 		}
@@ -247,8 +268,8 @@ int main(void)
 		{ // 直线模式。
 			if (last_state__ == 1)
 			{
-					last_state__ = 0;
-					LED_Blink(0, 3);
+				last_state__ = 0;
+				// LED_Blink(0, 3);
 			}
 		}
 
@@ -257,7 +278,7 @@ int main(void)
 		if (Turn_Flag)
 		{
 			static float Bias, Last_Bias;								  // 这里原来是static float!!
-			Bias = CCD_Zhongzhi - 57;									  // 提取偏差
+			Bias = CCD_Zhongzhi - 59;									  // 提取偏差
 			Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
 			Last_Bias = Bias;											  // 保存上一次的偏差
 																		  // printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
@@ -293,7 +314,7 @@ int main(void)
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
 
 		// printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
-		printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, -(Total_A_CNT)-last_distance);
+		// printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, -(Total_A_CNT)-last_distance);
 	}
 }
 
@@ -342,8 +363,42 @@ void ADC_VOLTAGE_INST_IRQHandler(void)
 void Kinematic_Analysis(float velocity, float turn)
 {
 
-	Target_A = (velocity + turn * 1.6);
-	Target_B = (velocity - turn * 1.6); // 后轮差速
+	if (Turn_Flag)
+	{
+		if (Turn > 0)
+		{ // 右转。
+			Target_A = (velocity + turn * 0.4);
+			Target_B = (velocity / 4); // 后轮差速
+		}
+		else if (Turn < 0)
+		{
+			Target_A = (velocity /4 );
+			Target_B = (velocity - turn * 0.4); // 后轮差速
+		}
+		else
+		{
+			Target_A = velocity;
+			Target_B = velocity;
+		}
+	}
+	else
+	{
+		if (Turn > 0)
+		{ // 右转。
+			Target_A = (velocity + turn * 1.6);
+			Target_B = (velocity - turn * 1.6); // 后轮差速
+		}
+		else if (Turn < 0)
+		{
+			Target_A = (velocity + turn * 1.6);
+			Target_B = (velocity - turn * 1.6); // 后轮差速
+		}
+		else
+		{
+			Target_A = velocity;
+			Target_B = velocity;
+		}
+	}
 }
 
 void CCD_Mode(void)
