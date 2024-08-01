@@ -211,26 +211,27 @@ int main(void)
 
 		if (track_num == 1)
 		{
-			if (Total_turns == 2) // 转了两次弯之后（出寻线模式的时候会+1）
-			if (Turn_Flag == 1)
-			{ // 巡线模式
-				if (last_state__==1){
-					if (-temp_A_cnt - temp_B_cnt < turn_threshold)
-					{
-						printf("temporary offline, ");
-					}
-					else {
-						printf("State changed to straight line mode\n");
-						temp_A_cnt = 0;
-						temp_B_cnt = 0;
-						last_state__ = 0;
-						LED_Blink(0, 3);
-					}
-				}
-				//直线模式进入巡线
-				else
+			if (Total_turns == 2){
+				
+				Turn = 0;
+				for (int k = 0; k < 10; k++)
 				{
-					printf("State should be changing to CCD mode\n");
+					Set_PWM(3000, 3000); // 保证到达A点
+					LED_Blink(0, 100);
+				}
+				Velocity = 0;
+				Set_PWM(0, 0);
+				while (1)
+					;
+			} // 转了两次弯之后（出寻线模式的时候会+1）
+			if (Turn_Flag == 1){
+			// { // 巡线模式
+			// 	printf("CCD Mode ");
+
+				//直线模式进入巡线
+				if (last_state__==0)
+				{
+					// printf("State should be changing to CCD mode\n");
 					if (-temp_A_cnt + temp_B_cnt >= (line_threshold * 2))
 					{	
 						printf("State changed to CCD mode\n");
@@ -240,11 +241,27 @@ int main(void)
 						temp_A_cnt = 0;
 						temp_B_cnt = 0;
 					}
+					else{
+						printf("wrongly online, ");
+					}
 				}
 			}
 			else
 			{  
-				printf("straight line mode Turn_Flag = 0");
+				//直线模式
+				if (last_state__==1){
+					if (-temp_A_cnt - temp_B_cnt < turn_threshold)
+					{
+						printf("temporary offline, ");
+						Turn_Flag =1;
+					}
+					else {
+						temp_A_cnt = 0;
+						temp_B_cnt = 0;
+						last_state__ = 0;
+						LED_Blink(0, 3);
+					}
+				}
 			}
 
 			// CCD_Mode(); // CCD巡线PID
