@@ -214,35 +214,42 @@ int main(void)
 			if (Total_turns == 2) // 转了两次弯之后（出寻线模式的时候会+1）
 			if (Turn_Flag == 1)
 			{ // 巡线模式
-				if(temp_A_cnt + temp_B_cnt < (min_distance/2)) {
-					Turn_Flag = 0;
-				}
-				else {
-					temp_A_cnt = 0;
-					temp_B_cnt = 0;
-					last_state__ = 1;
-					LED_Blink(0, 3);
-				}
-			}
-			else
-			{ // 直线模式。
-				if (last_state__ == 1)
-				{
-					if (-temp_A_cnt - temp_B_cnt > min_distance)
+				if (last_state__==1){
+					if (-temp_A_cnt - temp_B_cnt < turn_threshold)
 					{
-						Turn_Flag = 1;
+						printf("temporary offline, ");
+					}
+					else {
+						printf("State changed to straight line mode\n");
+						temp_A_cnt = 0;
+						temp_B_cnt = 0;
+						last_state__ = 0;
+						LED_Blink(0, 3);
+					}
+				}
+				//直线模式进入巡线
+				else
+				{
+					printf("State should be changing to CCD mode\n");
+					if (-temp_A_cnt + temp_B_cnt >= (line_threshold * 2))
+					{	
+						printf("State changed to CCD mode\n");
 						Total_turns++;
 						LED_Blink(0, 3);
-						last_state__ = 0;
+						last_state__ = 1;
 						temp_A_cnt = 0;
 						temp_B_cnt = 0;
 					}
 				}
 			}
+			else
+			{  
+				printf("straight line mode Turn_Flag = 0");
+			}
 
 			// CCD_Mode(); // CCD巡线PID
 
-			if (Turn_Flag && last_state__ == 1)
+			if (Turn_Flag==1 && (last_state__ == 1))
 			{
 				static float Bias, Last_Bias;								  // 这里原来是static float!!
 				Bias = CCD_Zhongzhi - 64;									  // 提取偏差
@@ -250,21 +257,21 @@ int main(void)
 				Last_Bias = Bias;											  // 保存上一次的偏差
 																			// printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
 			}
-			else if (!Turn_Flag && last_state__ == 1)
+			else if (Turn_Flag==0 && (last_state__ == 1))
 			{
-				Turn = -1;
+				Turn = -0.5;
 			}
-			else if (!Turn_Flag && last_state__ == 0)
+			else if (Turn_Flag==0 && (last_state__ == 0))
 			{
 				Delta_Target = Total_turns * Diff_Delta;
 				// A 是负的，走的多。
 				if (temp_A_cnt + temp_B_cnt < - 30)
 				{
-					Turn = -1;
+					Turn = -0.5;
 				}
 				else if (temp_A_cnt + temp_B_cnt > 30)
 				{
-					Turn = 1;
+					Turn = 0.5;
 				}
 				else
 				{
@@ -290,7 +297,7 @@ int main(void)
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
 
 		// printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
-		printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, -(Total_A_CNT)-last_distance);
+		printf("%d,%d, %d, %d, %d, %d\n", Turn_Flag, last_state__, -temp_A_cnt+temp_B_cnt, -temp_A_cnt-temp_B_cnt, CCD_Zhongzhi,Total_turns);
 	}
 }
 
