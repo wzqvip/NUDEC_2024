@@ -67,7 +67,7 @@ uint8_t CCD_Zhongzhi;
 void Kinematic_Analysis(float velocity, float turn);
 void APP_Show(void);
 void CCD_Mode(void);
-float Velocity_KP = 0.044, Velocity_KI = 0.007; // 速度控制PID参数
+float Velocity_KP = 0.1, Velocity_KI = 0.00; // 速度控制PID参数
 // float calibrate_offset(float curr_velocity);
 float offset = 0;
 
@@ -78,7 +78,7 @@ int main(void)
 	static int last_state__ = 0;
 	static int last_distance = 0;
 	static int track_num = 0;
-	int Diff_Delta = 1270;
+	int Diff_Delta = 1370;
 	int min_distance = 4000;
 	SYSCFG_DL_init();
 
@@ -143,7 +143,7 @@ int main(void)
 		}
 	}
 	LED_ON(track_num + 1);
-	Velocity = 10;
+	Velocity = 15;
 	last_distance = 0;
 
 	while (1)
@@ -257,7 +257,7 @@ int main(void)
 		if (Turn_Flag)
 		{
 			static float Bias, Last_Bias;								  // 这里原来是static float!!
-			Bias = CCD_Zhongzhi - 64;									  // 提取偏差
+			Bias = CCD_Zhongzhi - 57;									  // 提取偏差
 			Turn = Bias * Velocity_KP + (Bias - Last_Bias) * Velocity_KI; // PD控制
 			Last_Bias = Bias;											  // 保存上一次的偏差
 																		  // printf("BIAS: %d, %d \n", (int)Bias, (int)Last_Bias);
@@ -268,11 +268,11 @@ int main(void)
 			// A 是负的，走的多。
 			if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
 			{
-				Turn = -0.5;
+				Turn = -0.7;
 			}
 			else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
 			{
-				Turn = 0.5;
+				Turn = 0.7;
 			}
 			else
 			{
