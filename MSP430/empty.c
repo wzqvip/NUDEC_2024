@@ -143,7 +143,7 @@ int main(void)
 			}
 		}
 	}
-	LED_ON(track_num + 1);
+	// LED_ON(track_num + 1);
 	Velocity = 15;
 	last_distance = 0;
 
@@ -236,7 +236,7 @@ int main(void)
 
 			// 结束
 
-			if (Total_turns == 2 || ABS(Total_A_CNT) > 17000) // 转了两次弯之后（出寻线模式的时候会+1）
+			if (Total_turns == 2 || ABS(Total_A_CNT) > 16500) // 转了两次弯之后（出寻线模式的时候会+1）
 			{
 				Turn = 0;
 				Velocity = 0;
@@ -368,11 +368,11 @@ void Kinematic_Analysis(float velocity, float turn)
 		if (Turn > 0)
 		{ // 右转。
 			Target_A = (velocity + turn * 0.4);
-			Target_B = (velocity / 4); // 后轮差速
+			Target_B = (velocity - turn * 4); // 后轮差速
 		}
 		else if (Turn < 0)
 		{
-			Target_A = (velocity /4 );
+			Target_A = (velocity + turn * 4 );
 			Target_B = (velocity - turn * 0.4); // 后轮差速
 		}
 		else
