@@ -78,7 +78,7 @@ int main(void)
 	static int last_state__ = 0;
 	static int last_distance = 0;
 	static int track_num = 0;
-	int Diff_Delta = 1370;
+	int Diff_Delta = 1270;
 	int min_distance = 4000;
 	SYSCFG_DL_init();
 
@@ -210,7 +210,7 @@ int main(void)
 
 			if (ABS(Total_A_CNT) < 7000) {
 				Total_turns = 0;
-			}else if(ABS(Total_A_CNT) < 13000) {
+			}else if(ABS(Total_A_CNT) < 16000) {
 				Total_turns = 1;
 			}
 
