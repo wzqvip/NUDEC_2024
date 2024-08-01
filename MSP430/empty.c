@@ -247,6 +247,16 @@ int main(void)
 			}
 		}
 
+		if (track_num == 2)
+		{
+			if (ABS(Total_A_CNT) < 5200 && ABS(Total_B_CNT) < 5200)
+			{
+				Turn_Flag = 0;
+				Total_turns = 0;
+			}
+			Turn_Flag = 1;
+		}
+
 		if (Turn_Flag == 1)
 		{ // 巡线模式
 			if (last_state__ == 0)
@@ -285,19 +295,62 @@ int main(void)
 		}
 		else
 		{
-			Delta_Target = Total_turns * Diff_Delta;
-			// A 是负的，走的多。
-			if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
+			if (track_num == 1)
 			{
-				Turn = -0.7;
+				Delta_Target = Total_turns * Diff_Delta;
+				// A 是负的，走的多。
+				if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
+				{
+					Turn = -0.7;
+				}
+				else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
+				{
+					Turn = 0.7;
+				}
+				else
+				{
+					Turn = 0;
+				}
 			}
-			else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
+			else if (track_num == 2)
 			{
-				Turn = 0.7;
-			}
-			else
-			{
-				Turn = 0;
+				if (ABS(Total_A_CNT) < 4696 && ABS(Total_B_CNT) < 4137)
+				{
+					Delta_Target = 560;
+					if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
+					{
+						Turn = -2;
+					}
+					else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
+					{
+						Turn = 2;
+					}
+					else
+					{
+						Turn = 0;
+					}
+				}
+				else
+				{
+					Delta_Target = 0;
+					if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
+					{
+						// Turn = -2;
+						Turn =  Velocity;
+					}
+					else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
+					{
+						// Turn = 2;
+						Turn =  Velocity;
+					}
+					else
+					{
+						Turn = 0;
+					}
+					
+				}
+				// A 是负的，走的多。
+				
 			}
 		}
 
@@ -313,7 +366,7 @@ int main(void)
 
 		// printf("%f,%f,%f,%d\n",Pitch,Roll,Yaw,CCD_Zhongzhi);
 
-		// printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
+		printf("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Target_A, Target_B, PWMA, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, Total_turns);
 		// printf("%d,%d, %d, %d, %d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", Turn_Flag, last_state__, Total_A_CNT, Total_B_CNT, Total_turns, CCD_Zhongzhi, Target_A, encoderA_cnt, PWMA, Target_B, encoderB_cnt, PWMB, Total_A_CNT + Total_B_CNT, Delta_Target, -(Total_A_CNT)-last_distance);
 	}
 }
@@ -372,7 +425,7 @@ void Kinematic_Analysis(float velocity, float turn)
 		}
 		else if (Turn < 0)
 		{
-			Target_A = (velocity + turn * 4 );
+			Target_A = (velocity + turn * 4);
 			Target_B = (velocity - turn * 0.4); // 后轮差速
 		}
 		else
