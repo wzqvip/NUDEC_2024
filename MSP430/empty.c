@@ -47,7 +47,7 @@ int Total_turns = 0;
 
 int temp_A_cnt = 0;
 int temp_B_cnt = 0;
-int turn_threshold = 1270;
+int turn_threshold = 1300;
 int line_threshold = 3000;
 
 
@@ -253,7 +253,6 @@ int main(void)
 					if (-temp_A_cnt - temp_B_cnt < turn_threshold)
 					{
 						printf("temporary offline, ");
-						Turn_Flag =1;
 					}
 					else {
 						temp_A_cnt = 0;
@@ -276,7 +275,7 @@ int main(void)
 			}
 			else if (Turn_Flag==0 && (last_state__ == 1))
 			{
-				Turn = -0.5;
+				Turn = 0.5;
 			}
 			else if (Turn_Flag==0 && (last_state__ == 0))
 			{
