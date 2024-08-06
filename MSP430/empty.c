@@ -249,37 +249,73 @@ int main(void)
 
 		if (track_num == 2)
 		{
-			if (ABS(Total_A_CNT) < 5200 && ABS(Total_B_CNT) < 5200)
+			if (Total_turns == 0 || Total_turns == 2)
 			{
 				Turn_Flag = 0;
-				Total_turns = 0;
+				last_state__ = 0;
+				
 			}
-			Turn_Flag = 1;
+			else
+			{
+				
+			}
+			
 		}
 
 		if (Turn_Flag == 1)
 		{ // 巡线模式
-			if (last_state__ == 0)
-			{
-				last_state__ = 1;
-				int travel_dist = -(Total_A_CNT - last_distance);
-				if (travel_dist > min_distance)
-				{ // 走距离足够了。
-					// LED_Blink(0, 3);
-					Total_turns++;
-					last_distance = -(Total_A_CNT);
+			if (track_num!=2){
+				if (last_state__ == 0)
+				{
+					last_state__ = 1;
+					int travel_dist = -(Total_A_CNT - last_distance);
+					if (travel_dist > min_distance)
+					{ // 走距离足够了。
+						// LED_Blink(0, 3);
+						Total_turns++;
+						last_distance = -(Total_A_CNT);
+					}
+					else
+					{ // 如果不小心出巡线模式又回来
+
+					}
 				}
-				else
-				{ // 如果不小心出巡线模式又回来
+			}
+			else{
+				if(last_state__==0){
+					last_state__ = 1;
+					Total_turns++;
+					LED_Blink(0, 3);
 				}
 			}
 		}
 		else
 		{ // 直线模式。
-			if (last_state__ == 1)
-			{
-				last_state__ = 0;
-				// LED_Blink(0, 3);
+			if (track_num != 2){
+				if (last_state__ == 1)
+				{
+					last_state__ = 0;
+					Total_turns++;
+					LED_Blink(0, 3);
+				}
+			}
+			else{
+				if (Total_turns == 1){
+					if (Total_B_CNT+Total_A_CNT<Diff_Delta){
+						Total_turns++;
+						last_state__ = 0;
+						LED_Blink(0, 3);
+					}
+				}
+				else if (Total_turns ==2)
+				{
+					if (-Total_B_CNT-Total_A_CNT<Diff_Delta){
+						Total_turns++;
+						last_state__ = 0;
+						LED_Blink(0, 3);
+					}
+				}
+				
 			}
 		}
 
@@ -314,40 +350,41 @@ int main(void)
 			}
 			else if (track_num == 2)
 			{
-				if (ABS(Total_A_CNT) < 4696 && ABS(Total_B_CNT) < 4137)
+				if (Total_turns
+				%4==0)
+{				if (ABS(Total_A_CNT) < 2800 && ABS(Total_B_CNT) < 2400)
 				{
-					Delta_Target = 560;
-					if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
-					{
-						Turn = -2;
-					}
-					else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
-					{
-						Turn = 2;
-					}
-					else
-					{
-						Turn = 0;
-					}
+					Turn = 0.7;
 				}
-				else
+				else if (ABS(Total_A_CNT) < 5140 && ABS(Total_B_CNT) < 5140)
 				{
-					Delta_Target = 0;
-					if (Total_A_CNT + Total_B_CNT < -Delta_Target - 30)
-					{
-						// Turn = -2;
-						Turn =  Velocity;
-					}
-					else if (Total_B_CNT + Total_B_CNT > Delta_Target + 30)
-					{
-						// Turn = 2;
-						Turn =  Velocity;
-					}
-					else
-					{
-						Turn = 0;
-					}
-					
+				
+					Turn = -0.7;
+				}
+				else{
+					Total_A_CNT = 0;
+					Total_B_CNT = 0;
+					Turn = 0;
+					Turn_Flag = 1;
+				}
+				}
+				else if(Total_turns
+				%4==2){
+					if (ABS(Total_A_CNT) < 2800 && ABS(Total_B_CNT) < 2400)
+				{
+					Turn = -0.7;
+				}
+				else if (ABS(Total_A_CNT) < 5140 && ABS(Total_B_CNT) < 5140)
+				{
+				
+					Turn = 0.7;
+				}
+				else{
+					Total_A_CNT = 0;
+					Total_B_CNT = 0;
+					Turn = 0;
+					Turn_Flag = 1;
+				}
 				}
 				// A 是负的，走的多。
 				
